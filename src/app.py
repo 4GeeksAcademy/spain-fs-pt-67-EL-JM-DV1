@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Product
+from models import db, User, Product, OrderItems, Order
 
 
 app = Flask(__name__)
@@ -94,7 +94,7 @@ def get_one_user(user_id):
 
 # Product-----------------------------------------------------------------------------------------------
 
-#Create a User
+#Create a Product
 @app.route('/product', methods=['POST'])
 def create_product():
     # Process the information coming from the client
@@ -111,4 +111,142 @@ def create_product():
     if not (product.name, product.price, product.category, product.image, product.description):
         return jsonify({'message': 'All fields are required'}), 400
 
+    return jsonify({'message': 'Product registered successfully'}), 201
+
+#Get all Products
+@app.route('/products', methods=['GET'])
+def get_products():
+    #access all registered users
+    products_querys = Product.query.all()
+    #map users to convert into an array and return an array of objects
+    results = list(map(lambda products: products.serialize(), products_querys))
+
+    #is Products empty, returns error code
+    if results == []:
+        return jsonify({"msg": "No registered Products"}), 404
+    
+    #display results of access
+    response_body = {
+        "msg": "These are the registered Products", 
+        "results": results
+    }
+    return jsonify(response_body), 200
+
+#DGet Products by id
+@app.route('/products/<int:products_id>', methods=['GET'])
+def get_one_product(products_id):
+    #filter all Product by id
+    Product_query = Product.query.filter_by(products = products_id).first()
+
+    if Product_query is None:
+        return jsonify({"msg": "Product with id: " + str(products_id) + " doesn't exist"}), 404
+    
+    response_body = {
+        "msg": "Produt is", 
+        "result": Product_query.serialize()
+    }
+
+    return jsonify(response_body), 200
+
+    # OrderItems-----------------------------------------------------------------------------------------------
+
+    #Create a orderitems
+@app.route('/orderitems', methods=['POST'])
+def create_orderitems():
+    # Process the information coming from the client
+    orderitems_data = request.get_json()
+
+    # We create an instance without being recorded in the database
+    orderitems = OrderItems()
+    orderitems.orderid = orderitems_data["OrderID"]
+    orderitems.productid = orderitems_data["ProductID"]
+    orderitems.quantity = orderitems_data["Quantity"]
+    
+    if not (orderitems.orderid, orderitems.productid, orderitems.quantity):
+        return jsonify({'message': 'All fields are required'}), 400
     return jsonify({'message': 'User registered successfully'}), 201
+
+#Get all orderitems
+@app.route('/orderitems', methods=['GET'])
+def get_orderitems():
+    #access all registered OrderItems
+    orderitems_querys = OrderItems.query.all()
+    #map users to convert into an array and return an array of objects
+    results = list(map(lambda orderitems: orderitems.serialize(), orderitems_querys))
+
+    #is OrderItems empty, returns error code
+    if results == []:
+        return jsonify({"msg": "No registered OrderItems"}), 404
+    
+    #display results of access
+    response_body = {
+        "msg": "These are the registered OrderItems", 
+        "results": results
+    }
+    return jsonify(response_body), 200
+
+#DGet OrderItems by id
+@app.route('/OrderItems/<int:OrderItems_id>', methods=['GET'])
+def get_one_OrderItems(orderitems_id):
+    #filter all OrderItems by id
+    OrderItems_query = OrderItems.query.filter_by(orderitems = orderitems_id).first()
+
+    if OrderItems_query is None:
+        return jsonify({"msg": "OrderItems with id: " + str(orderitems_id) + " doesn't exist"}), 404
+    
+    response_body = {
+        "msg": "OrderItems is", 
+        "result": OrderItems_query.serialize()
+    }
+    return jsonify(response_body), 200
+
+    # Order-----------------------------------------------------------------------------------------------
+
+    #Create a order
+@app.route('/order', methods=['POST'])
+def create_order():
+    # Process the information coming from the client
+    order_data = request.get_json()
+
+    # We create an instance without being recorded in the database
+    order = Order()
+    order.UserID = order_data["UserID"]
+    order.totalamount = order_data["TotalAmount"]
+    order.orderstatus = order_data["OrderStatus"]
+    
+    if not (order.UserID, order.totalamount, order.orderstatus):
+        return jsonify({'message': 'All fields are required'}), 400
+    return jsonify({'message': 'Order registered successfully'}), 201
+
+#Get all order
+@app.route('/order', methods=['GET'])
+def get_order():
+    #access all registered OrderItems
+    order_querys = Order.query.all()
+    #map users to convert into an array and return an array of objects
+    results = list(map(lambda order: order.serialize(), order_querys))
+
+    #is Order empty, returns error code
+    if results == []:
+        return jsonify({"msg": "No registered Order"}), 404
+    
+    #display results of access
+    response_body = {
+        "msg": "These are the registered Order", 
+        "results": results    }
+    return jsonify(response_body), 200
+
+#DGet Order by id
+@app.route('/Order/<int:Order_id>', methods=['GET'])
+def get_one_Order(order_id):
+    #filter all Order by id
+    Order_query = Order.query.filter_by(order = order_id).first()
+
+    if Order_query is None:
+        return jsonify({"msg": "Order with id: " + str(order_id) + " doesn't exist"}), 404
+    
+    response_body = {
+        "msg": "Order is", 
+        "result": Order_query.serialize()
+    }
+    return jsonify(response_body), 200
