@@ -23,7 +23,7 @@ def handle_hello():
 # USER-----------------------------------------------------------------------------------------------
 
 #Create a User
-@app.route('/user', methods=['POST'])
+@api.route('/user', methods=['POST'])
 def create_user():
     # Process the information coming from the client
     user_data = request.get_json()
@@ -42,7 +42,7 @@ def create_user():
 
 
 #Get all users
-@app.route('/users', methods=['GET'])
+@api.route('/users', methods=['GET'])
 def get_users():
     #access all registered users
     users_querys = User.query.all()
@@ -61,7 +61,7 @@ def get_users():
     return jsonify(response_body), 200
 
 #DGet user by id
-@app.route('/users/<int:user_id>', methods=['GET'])
+@api.route('/users/<int:user_id>', methods=['GET'])
 def get_one_user(user_id):
     #filter all users by id
     user_query = User.query.filter_by(user = user_id).first()
@@ -79,7 +79,7 @@ def get_one_user(user_id):
 # Product-----------------------------------------------------------------------------------------------
 
 #Create a Product
-@app.route('/product', methods=['POST'])
+@api.route('/product', methods=['POST'])
 def create_product():
     # Process the information coming from the client
     product_data = request.get_json()
@@ -98,7 +98,7 @@ def create_product():
     return jsonify({'message': 'Product registered successfully'}), 201
 
 #Get all Products
-@app.route('/products', methods=['GET'])
+@api.route('/products', methods=['GET'])
 def get_products():
     #access all registered users
     products_querys = Product.query.all()
@@ -117,7 +117,7 @@ def get_products():
     return jsonify(response_body), 200
 
 #DGet Products by id
-@app.route('/products/<int:products_id>', methods=['GET'])
+@api.route('/products/<int:products_id>', methods=['GET'])
 def get_one_product(products_id):
     #filter all Product by id
     Product_query = Product.query.filter_by(products = products_id).first()
@@ -135,7 +135,7 @@ def get_one_product(products_id):
     # OrderItems-----------------------------------------------------------------------------------------------
 
     #Create a orderitems
-@app.route('/orderitems', methods=['POST'])
+@api.route('/orderitems', methods=['POST'])
 def create_orderitems():
     # Process the information coming from the client
     orderitems_data = request.get_json()
@@ -151,7 +151,7 @@ def create_orderitems():
     return jsonify({'message': 'User registered successfully'}), 201
 
 #Get all orderitems
-@app.route('/orderitems', methods=['GET'])
+@api.route('/orderitems', methods=['GET'])
 def get_orderitems():
     #access all registered OrderItems
     orderitems_querys = OrderItems.query.all()
@@ -170,7 +170,7 @@ def get_orderitems():
     return jsonify(response_body), 200
 
 #DGet OrderItems by id
-@app.route('/OrderItems/<int:OrderItems_id>', methods=['GET'])
+@api.route('/OrderItems/<int:OrderItems_id>', methods=['GET'])
 def get_one_OrderItems(orderitems_id):
     #filter all OrderItems by id
     OrderItems_query = OrderItems.query.filter_by(orderitems = orderitems_id).first()
@@ -187,7 +187,7 @@ def get_one_OrderItems(orderitems_id):
     # Order-----------------------------------------------------------------------------------------------
 
     #Create a order
-@app.route('/order', methods=['POST'])
+@api.route('/order', methods=['POST'])
 def create_order():
     # Process the information coming from the client
     order_data = request.get_json()
@@ -203,7 +203,7 @@ def create_order():
     return jsonify({'message': 'Order registered successfully'}), 201
 
 #Get all order
-@app.route('/order', methods=['GET'])
+@api.route('/order', methods=['GET'])
 def get_order():
     #access all registered OrderItems
     order_querys = Order.query.all()
@@ -221,7 +221,7 @@ def get_order():
     return jsonify(response_body), 200
 
 #DGet Order by id
-@app.route('/Order/<int:Order_id>', methods=['GET'])
+@api.route('/Order/<int:Order_id>', methods=['GET'])
 def get_one_Order(order_id):
     #filter all Order by id
     Order_query = Order.query.filter_by(order = order_id).first()
