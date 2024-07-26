@@ -4,8 +4,6 @@ from flask import Flask, redirect, request
 
 import stripe
 
-print(variable)
-
 app = Flask(__name__,
             static_url_path='',
             static_folder='public')
