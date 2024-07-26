@@ -33,9 +33,9 @@ class User(db.Model):
             "name": self.name,
             "address": self.address,
             "email": self.email
-             # do not serialize the password, its a security breach
+            # do not serialize the password, it's a security breach
         }
-    
+
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), unique=False, nullable=False)
@@ -51,12 +51,12 @@ class Product(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "price": self.price,
-            "category": self.category.name,
+            "price": str(self.price),  # Convert to string to ensure JSON compatibility
+            "category": self.category.value,  # Serialize the value of the Enum
             "image": self.image,
             "description": self.description
         }
-    
+
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -70,18 +70,18 @@ class Order(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "total_amount": self.total_amount,
-            "order_status": self.order_status
+            "total_amount": str(self.total_amount),  # Convert to string to ensure JSON compatibility
+            "order_status": self.order_status.value  # Serialize the value of the Enum
         }
-    
+
 class OrderItems(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), unique=True, nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), unique=True, nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return '<Order_items %r>' % self.id
+        return '<OrderItems %r>' % self.id
 
     def serialize(self):
         return {
