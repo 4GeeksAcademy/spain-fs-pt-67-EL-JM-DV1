@@ -5,6 +5,7 @@ from api.models import db, User, Product, OrderItems, Order, Category
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
+
 YOUR_DOMAIN = 'https://glowing-broccoli-x5579q6vx677fv47g-3001.app.github.dev/'
 api = Blueprint('api', __name__)
 
