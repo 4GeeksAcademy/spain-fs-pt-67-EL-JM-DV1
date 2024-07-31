@@ -1,12 +1,42 @@
-from flask import Flask, request, jsonify, url_for, Blueprint
+import os
+import stripe
+from flask import Flask, redirect, request, jsonify, url_for, Blueprint
 from api.models import db, User, Product, OrderItems, Order, Category
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
+YOUR_DOMAIN = 'https://glowing-broccoli-x5579q6vx677fv47g-3001.app.github.dev/'
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+
+
+
+@api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                  
+                    'price': '{{PRICE_ID}}',
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '?success=true',
+            cancel_url=YOUR_DOMAIN + '?canceled=true',
+        )
+    except Exception as e:
+        return str(e)
+
+    return redirect(checkout_session.url, code=303)
+
+if __name__ == '__main__':
+
+    api.run(port=4242)
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
