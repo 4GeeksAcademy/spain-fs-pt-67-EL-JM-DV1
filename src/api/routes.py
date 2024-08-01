@@ -4,6 +4,8 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Product, Order, OrderItems
 from api.utils import generate_sitemap, APIException
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
 from flask_cors import CORS
 
 api = Blueprint('api', __name__)
@@ -21,6 +23,36 @@ def handle_hello():
         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
     }
 
+    return jsonify(response_body), 200
+
+# Login----------------------------------------------------------------------------------------------
+
+@api.route('/login', methods=['POST'])
+def login():
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
+    # Aquí deberías validar contra tu base de datos
+    user_query = User.query.filter_by(email=email, password=password).first()
+    if email != user_query.email or password != user_query.password:
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token), 200
+
+@api.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user()), 200
+
+
+@api.route('/pedido', methods=['GET'])
+@jwt_required()
+def order_user():
+
+    response_body = {
+        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
+    }
     return jsonify(response_body), 200
 
 
