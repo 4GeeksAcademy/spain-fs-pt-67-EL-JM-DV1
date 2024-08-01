@@ -1,7 +1,9 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+import os
+import stripe
+from flask import Flask, request, jsonify, url_for, Blueprint, redirect
 from api.models import db, User, Product, Order, OrderItems
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -24,6 +26,36 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+# API-----------------------------------------------------------------------------------------------
+
+stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
+
+# app = Flask(__name__,
+#             static_url_path='',
+#             static_folder='public')
+
+YOUR_DOMAIN = 'http://localhost:4242'
+
+@api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    'price': '{{PRICE_ID}}',
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '?success=true',
+            cancel_url=YOUR_DOMAIN + '?canceled=true',
+        )
+    except Exception as e:
+        return str(e)
+
+    return redirect(checkout_session.url, code=303)
 
 # Login----------------------------------------------------------------------------------------------
 
