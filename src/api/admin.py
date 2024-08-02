@@ -17,6 +17,3 @@ def setup_admin(app):
 
 
 
-
-19h22
-Ese es Admin
