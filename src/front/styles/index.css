@@ -1,3 +1,17 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+/*========================= Footer ================================*/
+
+footer {
+    background: #FF5A63;
+    min-height: 100px;
+}
+
+footer p {
+    color: black;
+    text-align: center;
+}
+
+#iconos i {
+    font-size: 28px;
+    padding: 0 8px;
+    color: black;
+}
