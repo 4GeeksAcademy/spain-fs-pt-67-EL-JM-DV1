@@ -1,4 +1,3 @@
-// src/front/js/store/flux.js
 const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
@@ -14,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                     background: "white",
                     initial: "white"
                 }
-            ]
+            ],
+            cart: [] // Adicionando estado para o carrinho de compras
         },
         actions: {
             login: async (email, password) => {
@@ -52,7 +52,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             getMessage: async () => {
                 try {
-                    // Atualize a URL do backend aqui
                     const resp = await fetch('https://musical-spoon-q77j9grp6w74f49px-3001.app.github.dev/api/hello');
                     const data = await resp.json();
                     setStore({ message: data.message });
@@ -62,6 +61,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.log("Error loading message from backend", error);
                 }
             },
+
             changeColor: (index, color) => {
                 // get the store
                 const store = getStore();
@@ -75,6 +75,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                 // reset the global store
                 setStore({ demo: demo });
+            },
+
+            // Ação para adicionar um item ao carrinho
+            addToCart: (product) => {
+                const store = getStore();
+                const updatedCart = [...store.cart, product];
+                setStore({ cart: updatedCart });
+            },
+
+            // Ação para remover um item do carrinho
+            removeFromCart: (productId) => {
+                const store = getStore();
+                const updatedCart = store.cart.filter(item => item.id !== productId);
+                setStore({ cart: updatedCart });
+            },
+
+            // Ação para limpar o carrinho
+            clearCart: () => {
+                setStore({ cart: [] });
             }
         }
     };

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -15,6 +14,13 @@ export const Navbar = () => {
                         <button className="btn btn-primary">Check the Context in action</button>
                     </Link>
                     
+                    <Link to="/cart"> {/* Adicionando link para a página do carrinho */}
+                        <button className="btn btn-success ml-3">Carrito</button>
+                    </Link>
+                    
+                    <Link to="/pay"> {/* Adicionando link para a página de pagamento */}
+                        <button className="btn btn-warning ml-3">Pagar</button>
+                    </Link>
                     
                     <div className="dropdown d-inline-block ml-3">
                         <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">

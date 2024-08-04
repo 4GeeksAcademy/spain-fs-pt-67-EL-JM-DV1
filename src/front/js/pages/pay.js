@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
+import "./pay.js";  
 
 const ProductDisplay = () => (
   <section>
@@ -9,8 +9,8 @@ const ProductDisplay = () => (
         alt="The cover of Stubborn Attachments"
       />
       <div className="description">
-      <h3>Stubborn Attachments</h3>
-      <h5>$20.00</h5>
+        <h3>Stubborn Attachments</h3>
+        <h5>$20.00</h5>
       </div>
     </div>
     <form action="/create-checkout-session" method="POST">
@@ -27,11 +27,11 @@ const Message = ({ message }) => (
   </section>
 );
 
-export default function App() {
+export default function Pay() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    // Check to see if this is a redirect back from Checkout
+    
     const query = new URLSearchParams(window.location.search);
 
     if (query.get("success")) {
@@ -39,15 +39,9 @@ export default function App() {
     }
 
     if (query.get("canceled")) {
-      setMessage(
-        "Order canceled -- continue to shop around and checkout when you're ready."
-      );
+      setMessage("Order canceled -- continue to shop around and checkout when you're ready.");
     }
   }, []);
 
-  return message ? (
-    <Message message={message} />
-  ) : (
-    <ProductDisplay />
-  );
+  return message ? <Message message={message} /> : <ProductDisplay />;
 }
