@@ -4,7 +4,7 @@ export const Footer = () => (
 	<div className="footer mt-auto py-3 text-center">
 
 
-		<section id="seccion-contacto" class="border-bottom border-secondary border-2">
+		<section id="seccion-contacto" className="border-bottom border-secondary border-2">
 			<div id="seccion-contactos">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
 					<path fill="#FF5A63" fill-opacity="1"
@@ -14,14 +14,14 @@ export const Footer = () => (
 			</div>
 		</section>
 
-		<footer class="w-100 d-flex align-items-center justify-content-center flex-wrap" target="blank">
+		<footer className="w-100 d-flex align-items-center justify-content-center flex-wrap" target="blank">
 			<div>
-				<p class="fs-5 px-3 pt-3"> <strong> Baxter Shop </strong> &copy; Todos los Derechos Reservados 2024</p>
+				<p className="fs-5 text-ligth px-3 pt-3"> <strong> Baxter Shop </strong> &copy; Todos los Derechos Reservados 2024</p>
 			</div>
 			<div id="iconos">
-				<a href="https://es-es.facebook.com/"><i class="bi bi-facebook"></i></a>
-				<a href="https://www.instagram.com/"><i class="bi bi-instagram"></i></a>
-				<a href="https://www.twitter.com/"><i class="bi bi-twitter"></i></a>
+				<a href="https://es-es.facebook.com/"><i className="bi bi-facebook"></i></a>
+				<a href="https://www.instagram.com/"><i className="bi bi-instagram"></i></a>
+				<a href="https://www.twitter.com/"><i className="bi bi-twitter"></i></a>
 			</div>
   		</footer>
 	</div>
