@@ -1,12 +1,10 @@
-/*========================= Footer ================================*/
-
 footer {
     background: #FF5A63;
     min-height: 100px;
 }
 
 footer p {
-    color: black;
+    color: rgb(255, 255, 255);
     text-align: center;
 }
 
