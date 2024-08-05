@@ -1,3 +1,20 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+.red-background {
+    background-color: #FF5A63;
+}
+
+.white-text {
+    color: white;
+}
+
+.red-text {
+    color: #FF5A63;
+}
+
+.special-btn {
+    background-color: #FF5A63;
+    color: white;
+    width: 400px;
+}

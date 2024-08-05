@@ -93,21 +93,31 @@ def order_user():
 #Create a User
 @api.route('/user', methods=['POST'])
 def create_user():
-    # Process the information coming from the client
-    user_data = request.get_json()
+    body = request.json
 
-    # We create an instance without being recorded in the database
-    user = User()
-    user.firstName = user_data["firstName"]
-    user.address= user_data["address"]
-    user.email = user_data["email"]
-    user.password = user_data["password"]
+    if body is None:
+        return "El cuerpo de la solicitud está vacío", 400
+    if 'name' not in body:
+        return 'Debes especificar el nombre (name)', 400
+    if 'address' not in body:
+        return 'Debes especificar una dirección (address)', 400
+    if 'email' not in body:
+        return 'Debes especificar un correo electrónico (email)', 400
+    if 'password' not in body:
+        return 'Debes especificar una contraseña (password)', 400
+    if 'is_active' not in body:
+        return 'Debes especificar si el usuario está activo', 400
 
-    if not (user.name and user.last_name and user.email):
-        return jsonify({'message': 'All fields are required'}), 400
+    user = User(name = body["name"], address = body["address"], email = body["email"], password = body["password"], is_active = body["is_active"])
+    db.session.add(user)
+    db.session.commit()
 
-    return jsonify({'message': 'User registered successfully'}), 201
+    response_body = {
+        "msg": "Usuario creado!",
+        "id": user.id
+    }
 
+    return jsonify(response_body), 200
 
 #Get all users
 @api.route('/users', methods=['GET'])
@@ -132,7 +142,7 @@ def get_users():
 @api.route('/users/<int:user_id>', methods=['GET'])
 def get_one_user(user_id):
     #filter all users by id
-    user_query = User.query.filter_by(user = user_id).first()
+    user_query = User.query.filter_by(id = user_id).first()
 
     if user_query is None:
         return jsonify({"msg": "User with id: " + str(user_id) + " doesn't exist"}), 404
@@ -149,21 +159,40 @@ def get_one_user(user_id):
 #Create a Product
 @api.route('/product', methods=['POST'])
 def create_product():
-    # Process the information coming from the client
-    product_data = request.get_json()
+    body = request.json
 
-    # We create an instance without being recorded in the database
-    product = Product()
-    product.name = product_data["Name"]
-    product.price= product_data["Price"]
-    product.category = product_data["Category"]
-    product.image = product_data["Image"]
-    product.description = product_data["Description"]
+    if body is None:
+        return "El cuerpo de la solicitud está vacío", 400
+    if 'name' not in body:
+        return 'Debes especificar el nombre (name)', 400
+    if 'price' not in body:
+        return 'Debes especificar un precio (price)', 400
+    if 'category' not in body:
+        return 'Debes especificar una categoria (category: PERROS, GATOS, ROEDORES, PECES, PAJAROS)', 400
+    if 'image' not in body:
+        return 'Debes especificar una imagen (image: URL)', 400
+    if 'description' not in body:
+        return 'Debes especificar una descripción (description)', 400
+    
+    category_value = body.get('category')
+    
+    # Comprobar si el valor de category_value está en Category
+    try:
+        if Category[category_value] not in Category:
+            return 'Debes especificar una categoria válida (category: PERROS, GATOS, ROEDORES, PECES, PAJAROS)', 400
+    except KeyError:
+        return 'Debes especificar una categoria válida (category: PERROS, GATOS, ROEDORES, PECES, PAJAROS)', 400
 
-    if not (product.name, product.price, product.category, product.image, product.description):
-        return jsonify({'message': 'All fields are required'}), 400
+    product = Product(name = body["name"], price = body["price"], category = body["category"], image = body["image"], description = body["description"])
+    db.session.add(product)
+    db.session.commit()
 
-    return jsonify({'message': 'Product registered successfully'}), 201
+    response_body = {
+        "msg": "Producto creado!",
+        "id": product.id
+    }
+
+    return jsonify(response_body), 200
 
 #Get all Products
 @api.route('/products', methods=['GET'])
@@ -188,7 +217,7 @@ def get_products():
 @api.route('/products/<int:products_id>', methods=['GET'])
 def get_one_product(products_id):
     #filter all Product by id
-    Product_query = Product.query.filter_by(products = products_id).first()
+    Product_query = Product.query.filter_by(id = products_id).first()
 
     if Product_query is None:
         return jsonify({"msg": "Product with id: " + str(products_id) + " doesn't exist"}), 404

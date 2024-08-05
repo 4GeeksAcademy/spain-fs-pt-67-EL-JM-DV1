@@ -13,7 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+
+			productDetails: {},
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -46,7 +48,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
-			}
+			},
+
+			getProductDetails: async (product_id) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products/${product_id}`);
+
+					const data = await resp.json();
+
+					setStore({ productDetails: data.result });
+				} catch (error) {
+					console.log("Error al cargar el detalle del producto", error);
+				}
+			} 
 		}
 	};
 };
