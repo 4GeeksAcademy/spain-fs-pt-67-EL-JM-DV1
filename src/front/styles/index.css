@@ -18,3 +18,18 @@
     color: white;
     width: 400px;
 }
+footer {
+    background: #FF5A63;
+    min-height: 100px;
+}
+
+footer p {
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+#iconos i {
+    font-size: 28px;
+    padding: 0 8px;
+    color: black;
+}
