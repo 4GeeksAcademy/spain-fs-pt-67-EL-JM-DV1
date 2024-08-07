@@ -87,7 +87,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log("Error al cargar el detalle del producto", error);
 				}
-			} 
+			},
+
+			addToKart: async (product_details) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/cesta`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "id": product_details.id,
+							"price": product_details.price
+                        })
+
+                    });
+
+					const data = await resp.json();
+
+					return data.msg;
+				} catch (error) {
+					console.log("Error al añadir prducto al carrito", error);
+				}
+			}
 		}
 	};
 };

@@ -8,6 +8,10 @@ export const Details = () => {
     const { store, actions } = useContext(Context);
     const { id_product } = useParams();
 
+    const handleBuy = () => {
+        actions.addToKart(store.productDetails) ? alert("Producto añadido a la cesta") : alert("El producto no ha sido añadido a la cesta");
+    }
+
     useEffect(() => {
         actions.getProductDetails(id_product);
     }, []);
@@ -29,7 +33,7 @@ export const Details = () => {
                 </div>
             </div>
             <div className="d-flex justify-content-center">
-                <button type="button" className="btn special-btn">Comprar</button>
+                <button type="button" className="btn special-btn" onClick={handleBuy}>Comprar</button>
             </div>
         </div>
     );
