@@ -1,5 +1,4 @@
 const getState = ({ getStore, getActions, setStore }) => {
-<<<<<<< HEAD
     return {
         store: {
             message: null,
@@ -15,33 +14,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                     initial: "white"
                 }
             ],
-            cart: [] // Adicionando estado para o carrinho de compras
+            productDetails: {},
+            cart: []
         },
         actions: {
-            login: async (email, password) => {
-=======
-	return {
-		store: {
-			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			],
 
-			productDetails: {},
-		},
-		actions: {
-
-			login: async(email, password) => {
->>>>>>> 491b94db8f72906f32034aa0660e1f52e32eadaf
+            login: async(email, password) => {
                 try {
                     // Atualize a URL do backend aqui
                     let response = await fetch('https://musical-spoon-q77j9grp6w74f49px-3001.app.github.dev/api/login', {
@@ -108,7 +86,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ cart: updatedCart });
             },
 
-<<<<<<< HEAD
             // Ação para remover um item do carrinho
             removeFromCart: (productId) => {
                 const store = getStore();
@@ -119,28 +96,19 @@ const getState = ({ getStore, getActions, setStore }) => {
             // Ação para limpar o carrinho
             clearCart: () => {
                 setStore({ cart: [] });
+            },
+
+            getProductDetails: async (product_id) => {
+                try {
+                    const resp = await fetch(process.env.BACKEND_URL + `/api/products/${product_id}`);
+                    const data = await resp.json();
+                    setStore({ productDetails: data.result });
+                } catch (error) {
+                    console.log("Error ao carregar o detalhe do produto", error);
+                }
             }
         }
     };
-=======
-				//reset the global store
-				setStore({ demo: demo });
-			},
-
-			getProductDetails: async (product_id) => {
-				try {
-					const resp = await fetch(process.env.BACKEND_URL + `/api/products/${product_id}`);
-
-					const data = await resp.json();
-
-					setStore({ productDetails: data.result });
-				} catch (error) {
-					console.log("Error al cargar el detalle del producto", error);
-				}
-			} 
-		}
-	};
->>>>>>> 491b94db8f72906f32034aa0660e1f52e32eadaf
 };
 
 export default getState;
