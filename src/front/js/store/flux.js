@@ -13,13 +13,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+
+			productDetails: {},
 		},
 		actions: {
+
+			login: async(email, password) => {
+                try {
+                    let response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "email": email,
+                            "password": password
+                        })
+
+                    })
+
+                    const data = await response.json()
+                    localStorage.setItem("token", data.access_token);
+                    return true
+
+                }   catch (error) {
+                    return false
+                }
+            },
+
+
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
+
+
 
 			getMessage: async () => {
 				try{
@@ -46,7 +75,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
-			}
+			},
+
+			getProductDetails: async (product_id) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products/${product_id}`);
+
+					const data = await resp.json();
+
+					setStore({ productDetails: data.result });
+				} catch (error) {
+					console.log("Error al cargar el detalle del producto", error);
+				}
+			} 
 		}
 	};
 };
