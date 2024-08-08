@@ -98,12 +98,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ cart: [] });
 			},
 
-			addToKart: async (product_details) => {
+			addToKart: async (product_details, token) => {
 				try {
 					const resp = await fetch(process.env.BACKEND_URL + `/api/cesta`, {
 						method: "POST",
 						headers: {
-							"Content-Type": "application/json"
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
 						},
 						body: JSON.stringify({
 							"id": product_details.id,
@@ -114,7 +115,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					const data = await resp.json();
 
-					return data.msg;
+					return data.result;
 				} catch (error) {
 					console.log("Error al añadir prducto al carrito", error);
 				}

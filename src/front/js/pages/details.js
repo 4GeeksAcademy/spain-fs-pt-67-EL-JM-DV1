@@ -2,14 +2,24 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import "../../styles/index.css"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Details = () => {
     const { store, actions } = useContext(Context);
     const { id_product } = useParams();
+    const navigate = useNavigate();
 
     const handleBuy = () => {
-        actions.addToKart(store.productDetails) ? alert("Producto añadido a la cesta") : alert("El producto no ha sido añadido a la cesta");
+        const token = localStorage.getItem('token');
+        if (token) {
+            if (actions.addToKart(store.productDetails, token)) {
+                alert("Producto añadido a la cesta");
+            } else {
+                alert("El producto no ha sido añadido a la cesta");
+            }
+        } else {
+            navigate('/login');
+        }
     }
 
     useEffect(() => {
@@ -27,7 +37,7 @@ export const Details = () => {
                         <div className="card-body">
                             <h5 className="card-title red-text">{store.productDetails.name}</h5>
                             <p className="card-text">{store.productDetails.description}</p>
-                            <p className="card-text"><small className="text-body-secondary"></small></p>
+                            <p className="card-text">{store.productDetails.price}<small className="text-body-secondary"></small></p>
                         </div>
                     </div>
                 </div>
