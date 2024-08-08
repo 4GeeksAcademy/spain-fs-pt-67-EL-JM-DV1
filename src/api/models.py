@@ -11,6 +11,7 @@ class Category(Enum):
     PAJAROS = "pájaros"
 
 class OrderStatus(Enum):
+    PENDIENTE = "Pendiente de pago"
     RECIBIDO = "Pedido recibido"
     PREPARACION = "En preparación"
     ENVIADO = "Enviado"
