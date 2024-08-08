@@ -8,6 +8,8 @@ from api.models import db, User, Product, Order, OrderItems, Category, OrderStat
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
+from decimal import Decimal
+
 api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
@@ -288,45 +290,42 @@ def addToKart():
 
     # recuperar información del producto
     data = request.get_json()
-    product_id = data.id
-    product_price = data.price
+    product_id = data['id']
+    product_price = data['price']
 
-    # validaciones del endpoint
+    # validaciones de los datos que nos llegan desde el Frontend
     if not product_id or not product_price:
         return jsonify("Informar ID y precio del producto"), 400
 
-    # select para comprobar si el usuario ya tiene una cesta de compras pendiente de pago
-    order = Order.query.filter_by(order_status = OrderStatus.PENDIENTE).first()
+    # Consulta para comprobar si el usuario ya tiene una cesta de compras pendiente de pago
+    order = Order.query.filter_by(user_id=user.id, order_status = OrderStatus.PENDIENTE).first()
 
     if order is None:
-        # caso el usuario no tenga ninguna cesta de compras, creamos un pedido en la tabla Order y añadimos producto en la tabla OrderItems
+        # Caso el usuario no tenga ninguna cesta de compras, creamos un pedido en la tabla Order y añadimos el producto en la tabla OrderItems
         new_order = Order(user_id=user.id, total_amount=product_price, order_status=OrderStatus.PENDIENTE)
         db.session.add(new_order)
         db.session.commit()
 
-        order_item = OrderItems(order_id=new_order.id, product_id=product_id, quantity=1)
-        db.session.add(order_item)
+        new_order_item = OrderItems(order_id=new_order.id, product_id=product_id, quantity=1)
+        db.session.add(new_order_item)
         db.session.commit()
 
         addedToKart = True
     else:
-        # caso el usuario tenga ninguna cesta de compras, actualizamos el total_amount en Order y hacemos una select para comprobar si en OrderItems existe el producto que el usuario quiere comprarse
-        new_order = Order.query.filter_by(order_status = OrderStatus.PENDIENTE).first()
-        new_order.total_amount = new_order.total_amount + product_price
-        db.session.commit()
+        # Caso el usuario tenga una cesta de compras, actualizamos el total_amount de Order y hacemos una select para comprobar si en OrderItems existe el producto que el usuario quiere comprarse
+        order.total_amount = order.total_amount + Decimal(product_price)
 
-        order_item_query = OrderItems.query.filter_by(product_id=product_id)
+        order_item = OrderItems.query.filter_by(order_id=order.id, product_id=product_id).first()
 
-        if order_item_query is None:
-            # caso no exista el producto en OrderItems, lo añadimos en la misma
-            order_item = OrderItems(order_id=new_order.id, product_id=product_id, quantity=1)
-            db.session.add(order_item)
+        if order_item is None:
+            # Caso no exista el producto en OrderItems, lo añadimos en la misma
+            new_order_item = OrderItems(order_id=order.id, product_id=product_id, quantity=1)
+            db.session.add(new_order_item)
             db.session.commit()
 
             addedToKart = True
         else:
-            # caso exista el producto en OrderItems, actualizamos el valor de quantity
-            order_item = OrderItems(id=order_item_query.id)
+            # Caso exista el producto en OrderItems, actualizamos el valor de quantity
             order_item.quantity = order_item.quantity + 1
             db.session.commit()
 
