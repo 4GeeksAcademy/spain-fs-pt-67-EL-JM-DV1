@@ -15,7 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			productDetails: {},
-			cart: []
+			cart: [],
+			allProducts: []
 		},
 		actions: {
 
@@ -130,7 +131,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log("Error al cargar el detalle del producto", error);
 				}
+			},
+
+			getAllProducts: async () => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products`);
+					const data = await resp.json();
+
+					setStore({ ...getStore(), allProducts: data.results });
+				} catch (error) {
+					console.log("Error al cargar los productos", error);
+
+				}
 			}
+
+
 		}
 	};
 };
