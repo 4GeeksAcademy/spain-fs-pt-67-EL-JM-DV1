@@ -8,12 +8,15 @@ import { Registro } from "./pages/registro";
 import { Single } from "./pages/single";
 import { Login } from "./pages/login";
 import { Product } from "./pages/product";
-import Cart from "./pages/cart"; 
-import Pay from "./pages/pay"; 
+import Cart from "./pages/cart";
+import Pay from "./pages/pay";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Details } from "./pages/details";
+import { Aves } from "./pages/aves";
+
+
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -33,7 +36,8 @@ const Layout = () => {
                         <Route element={<Login />} path="/login" />
                         <Route element={<Product />} path="/products" />
                         <Route element={<Cart />} path="/cart" />
-                        <Route element={<Pay />} path="/pay" /> 
+                        <Route element={<Pay />} path="/pay" />
+                        <Route element={<Aves />} path="/aves" />
                         <Route element={<Details />} path="/detail/:id_product" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
