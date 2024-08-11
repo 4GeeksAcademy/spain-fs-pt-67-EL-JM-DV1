@@ -16,7 +16,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 			productDetails: {},
 			cart: [],
-			allProducts: []
+			allProducts: [],
+			allAves:["pajaro", "loro"]
 		},
 		actions: {
 
