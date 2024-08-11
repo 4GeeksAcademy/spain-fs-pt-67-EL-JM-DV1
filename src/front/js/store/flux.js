@@ -17,7 +17,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			productDetails: {},
 			cart: [],
 			allProducts: [],
-			allAves:["pajaro", "loro"]
+			allAves:[
+				{ id: 1, nombre: "VITAKRAFT KRÄCKER BARRITAS DE FRUTAS PARA CANARIOS", imagen: "" },
+				{ id: 2, nombre: "VITAKRAFT KRÄCKER ALBARICOQUE E HIGO BARRITAS PARA PERIQUITOS", imagen: "" },
+				{ id: 2, nombre: "VITAKRAFT KRÄCKER BARRITAS DE MIEL Y SÉSAMO PARA PERIQUITOS", imagen: "" },
+				{ id: 2, nombre: "VITAKRAFT KRÄCKER BARRAS DE HUEVO Y SEMILLAS DE HIERBAS PARA PERIQUITOS", imagen: "" },
+				{ id: 2, nombre: "VITAKRAFT KRÄCKER MIEL Y SÉSAMO BARRITAS PARA CANARIOS", imagen: "" },
+				{ id: 2, nombre: "VITAKRAFT KRÄCKER MIEL Y EUCALIPTO BARIRTAS PARA COTORRAS", imagen: "" },
+			],
 		},
 		actions: {
 
@@ -143,6 +150,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log("Error al cargar los productos", error);
 
+				}
+			},
+			getAllAves: async () => {
+				try {
+				  const resp = await fetch(process.env.BACKEND_URL + `/api/aves`);
+				  const data = await resp.json();
+				  setStore({ ...getStore(),allAves: data.results });
+				} catch (error) {
+				  console.log("Error al cargar las aves", error);
 				}
 			}
 

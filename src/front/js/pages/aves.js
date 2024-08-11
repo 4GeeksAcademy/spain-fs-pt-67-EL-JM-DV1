@@ -1,33 +1,32 @@
 import React, { useContext } from "react";
 import Logoave from "../../img/Logoave.jpg";
-import { CardAves } from "./cardAves";
+import { CardAves } from "./CardAves";  
 import { Context } from "../store/appContext";
 
 export const Aves = () => {
-    const { store, actions } = useContext(Context)
-    console.log(store.allAves[1]);
+    const {  store, actions } = useContext(Context);  
 
     return (
-        <div className="#">
-            <div className="container-fluid-center d-flex justify-content-center">
+        <div className="container">
+            <div className="d-flex justify-content-center my-4">
                 <h1><strong>Aves</strong></h1>
             </div>
 
-            <div className="container-fluid-center d-flex justify-content-center">
+            <div className="d-flex justify-content-center mb-4">
                 <img src={Logoave} alt="aves" />
             </div>
-
-            {store.allAves.map((ave, index) => {
-                console.log(ave);
-                console.log(index);
-                return (
-                    <CardAves key={index} nombre={ave} />
-                )
-
-            })}
+          {/* Tarjetas de Aves */}
+          <div className="row">
+                {store.allAves && store.allAves.length > 0 ? (
+                    store.allAves.map((ave, index) => (
+                        <CardAves key={index} nombre={ave.nombre} />
+                    ))
+                ) : (
+                    <div className="d-flex justify-content-center">
+                        <p>No hay aves disponibles</p>
+                    </div>
+                )}
+            </div>
         </div>
-
-
-
     );
 };
