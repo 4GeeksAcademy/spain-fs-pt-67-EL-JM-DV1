@@ -150,7 +150,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 try {
                     const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
                     const data = await resp.json();
-                    setStore({ dogProducts: data.results });
+                    setStore({ ...getStore(), dogProducts: data.results });
                 } catch (error) {
                     console.log("Error al cargar los productos por categoría", error);
                 }
