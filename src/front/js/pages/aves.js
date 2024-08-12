@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import Logoave from "../../img/Logoave.jpg";
-import { CardAves } from "./CardAves";  
+import { CardAves } from "./CardAves";
 import { Context } from "../store/appContext";
 
 export const Aves = () => {
-    const {  store, actions } = useContext(Context);  
+    const { store, actions } = useContext(Context);
 
     return (
         <div className="container">
@@ -13,13 +13,13 @@ export const Aves = () => {
             </div>
 
             <div className="d-flex justify-content-center mb-4">
-                <img src={Logoave} alt="aves" />
+                <img className="w-50" src={Logoave} alt="aves" />
             </div>
-          {/* Tarjetas de Aves */}
-          <div className="row">
+            {/* Tarjetas de Aves */}
+            <div className="row">
                 {store.allAves && store.allAves.length > 0 ? (
                     store.allAves.map((ave, index) => (
-                        <CardAves key={index} nombre={ave.nombre} />
+                        <CardAves key={index} nombre={ave.nombre} descripcion={ave.descripcion} imagen={ave.imagen} />
                     ))
                 ) : (
                     <div className="d-flex justify-content-center">

@@ -17,13 +17,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			productDetails: {},
 			cart: [],
 			allProducts: [],
-			allAves:[
-				{ id: 1, nombre: "VITAKRAFT KRÄCKER BARRITAS DE FRUTAS PARA CANARIOS", imagen: "" },
-				{ id: 2, nombre: "VITAKRAFT KRÄCKER ALBARICOQUE E HIGO BARRITAS PARA PERIQUITOS", imagen: "" },
-				{ id: 2, nombre: "VITAKRAFT KRÄCKER BARRITAS DE MIEL Y SÉSAMO PARA PERIQUITOS", imagen: "" },
-				{ id: 2, nombre: "VITAKRAFT KRÄCKER BARRAS DE HUEVO Y SEMILLAS DE HIERBAS PARA PERIQUITOS", imagen: "" },
-				{ id: 2, nombre: "VITAKRAFT KRÄCKER MIEL Y SÉSAMO BARRITAS PARA CANARIOS", imagen: "" },
-				{ id: 2, nombre: "VITAKRAFT KRÄCKER MIEL Y EUCALIPTO BARIRTAS PARA COTORRAS", imagen: "" },
+			allAves: [
+				{ id: 1, nombre: "VITAKRAFT KRÄCKER BARRITAS DE FRUTAS PARA CANARIOS", descripcion:"test0", imagen: "https://www.kiwoko.com/dw/image/v2/BDLQ_PRD/on/demandware.static/-/Sites-kiwoko-master-catalog/default/dw5cb45609/images/snack_cotorras_vitakraft_barritas_miel_VIT21479_M.jpg?sw=780&sh=780&q=85" },
+				{ id: 2, nombre: "VITAKRAFT KRÄCKER ALBARICOQUE E HIGO BARRITAS PARA PERIQUITOS", descripcion: "test1", imagen: "" },
+				{ id: 3, nombre: "VITAKRAFT KRÄCKER BARRITAS DE MIEL Y SÉSAMO PARA PERIQUITOS", descripcion: "test2", imagen: "" },
+				{ id: 4, nombre: "VITAKRAFT KRÄCKER BARRAS DE HUEVO Y SEMILLAS DE HIERBAS PARA PERIQUITOS", descripcion: "test3", imagen: "" },
+				{ id: 5, nombre: "VITAKRAFT KRÄCKER MIEL Y SÉSAMO BARRITAS PARA CANARIOS", descripcion: "test4", imagen: "" },
+				{ id: 6, nombre: "VITAKRAFT KRÄCKER MIEL Y EUCALIPTO BARIRTAS PARA COTORRAS", descripcion: "test5", imagen: "" },
 			],
 		},
 		actions: {
@@ -154,11 +154,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			getAllAves: async () => {
 				try {
-				  const resp = await fetch(process.env.BACKEND_URL + `/api/aves`);
-				  const data = await resp.json();
-				  setStore({ ...getStore(),allAves: data.results });
+					const resp = await fetch(process.env.BACKEND_URL + `/api/aves`);
+					const data = await resp.json();
+					setStore({ ...getStore(), allAves: data.results });
 				} catch (error) {
-				  console.log("Error al cargar las aves", error);
+					console.log("Error al cargar las aves", error);
 				}
 			}
 
