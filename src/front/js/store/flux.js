@@ -33,6 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			    { id: 5, nombre:"ADVANCE POLLO Y ARROZ PIENSO PARA GATITOS", descripcion:"Alimento completo y equilibrado para gatitos de 2 a 12 meses, y para gatas gestantes y lactantes.", imagen:"https://www.kiwoko.com/dw/image/v2/BDLQ_PRD/on/demandware.static/-/Sites-kiwoko-master-catalog/default/dwf1de106e/images/comida_gatos_advance_affinity_kitten_pollo_arroz_52050_M_AB24%20(1).png?sw=780&sh=780&q=85", precio:"4.99 Є"},
 			    { id: 6, nombre:"TRUE ORIGINS PURE ADULT STERILISED SALMÓN NO GRAIN PIENSO PARA GATOS", descripcion:"Pienso para gatos adultos esterilizados sin cereales y con sabor a salmón. Apto también para gatos adultos con baja actividad, gatos seniors o con sobrepeso.", imagen:"https://www.kiwoko.com/dw/image/v2/BDLQ_PRD/on/demandware.static/-/Sites-kiwoko-master-catalog/default/dwae61955e/images/comida_gatos_true_origins_pure_adult_sterilised_salmon_TRU88025_M.jpg?sw=780&sh=780&q=85", precio:"4.99 Є"},
 			],
+            dogProducts: []
 		},
 		actions: {
 
@@ -177,7 +178,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log("Error al cargar las gatos", error);
 				}
-			}
+			},
+
+			getProductsByCategory: async (category) => {
+                try {
+                    const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
+                    const data = await resp.json();
+                    setStore({ ...getStore(), dogProducts: data.results });
+                } catch (error) {
+                    console.log("Error al cargar los productos por categoría", error);
+                }
+            }
 
 
 		}

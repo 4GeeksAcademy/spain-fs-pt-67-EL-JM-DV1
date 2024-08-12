@@ -332,3 +332,36 @@ def addToKart():
             addedToKart = True
 
     return jsonify({"msg": "Pedido creado", "result": addedToKart}), 200
+# Perros ----------------------------------------------------------------------------------------------------
+# Get Products by Category (e.g., 'PERROS', 'GATOS', etc.)
+@api.route('/products', methods=['GET'])
+def get_products_by_category():
+    category_filter = request.args.get('category', None)
+
+    if category_filter:
+        try:
+            # Validar la categoría utilizando la enumeración Category
+            category_enum = Category[category_filter.upper()]
+        except KeyError:
+            return jsonify({"msg": f"Categoria '{category_filter}' no es válida. Debes especificar una categoría válida: PERROS, GATOS, ROEDORES, PECES, PAJAROS"}), 400
+
+        # Filtrar productos por categoría
+        products_querys = Product.query.filter_by(category=category_enum).all()
+    else:
+        # Devolver todos los productos si no se pasa un filtro de categoría
+        products_querys = Product.query.all()
+
+    results = list(map(lambda products: products.serialize(), products_querys))
+
+    if not results:
+        return jsonify({"msg": "No registered Products"}), 404
+
+    response_body = {
+        "msg": "These are the registered Products",
+        "results_count": len(results),
+        "results": results
+    }
+
+    return jsonify(response_body), 200
+
+

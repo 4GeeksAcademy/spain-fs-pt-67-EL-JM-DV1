@@ -18,6 +18,7 @@ import { Aves } from "./pages/aves";
 import { Gatos } from "./pages/gatos";
 
 
+import DogCard from "./pages/DogCard";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -36,6 +37,7 @@ const Layout = () => {
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Login />} path="/login" />
                         <Route element={<Product />} path="/products" />
+                        <Route elementt={DogCard} path="/perros" />
                         <Route element={<Cart />} path="/cart" />
                         <Route element={<Pay />} path="/pay" />
                         <Route element={<Aves />} path="/aves" />
