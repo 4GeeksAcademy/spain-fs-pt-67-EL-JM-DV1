@@ -16,7 +16,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 			productDetails: {},
 			cart: [],
-			allProducts: []
+			allProducts: [],
+            dogProducts: []
 		},
 		actions: {
 
@@ -143,7 +144,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al cargar los productos", error);
 
 				}
-			}
+			},
+
+			getProductsByCategory: async (category) => {
+                try {
+                    const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
+                    const data = await resp.json();
+                    setStore({ dogProducts: data.results });
+                } catch (error) {
+                    console.log("Error al cargar los productos por categoría", error);
+                }
+            }
 
 
 		}
