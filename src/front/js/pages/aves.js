@@ -13,7 +13,7 @@ export const Aves = () => {
             </div>
 
             <div className="d-flex justify-content-center mb-4">
-                <img className="w-50" src={Logoave} alt="aves" />
+                <img className="w-25" src={Logoave} alt="aves" />
             </div>
             {/* Tarjetas de Aves */}
             <div className="row">

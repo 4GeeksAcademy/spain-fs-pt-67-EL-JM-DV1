@@ -3,7 +3,7 @@ import logogato from "../../img/logogato.jpg";
 import { CardGatos } from "./CardGatos";
 import { Context } from "../store/appContext";
 
-export const Aves = () => {
+export const Gatos = () => {
     const { store, actions } = useContext(Context);
 
     return (
@@ -19,7 +19,7 @@ export const Aves = () => {
             <div className="row">
                 {store.allGatos && store.allAves.length > 0 ? (
                     store.allGatos.map((gato, index) => (
-                        <CardAves key={index} nombre={gato.nombre} descripcion={gato.descripcion} imagen={gato.imagen} precio={gato.precio}/>
+                        <CardGatos key={index} nombre={gato.nombre} descripcion={gato.descripcion} imagen={gato.imagen} precio={gato.precio}/>
                     ))
                 ) : (
                     <div className="d-flex justify-content-center">

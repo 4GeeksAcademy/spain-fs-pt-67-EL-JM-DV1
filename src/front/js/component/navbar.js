@@ -12,20 +12,20 @@ export const Navbar = () => {
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
 						<li className="nav-item">
-						<a className="nav-link active text-white" aria-current="page" href="#"> Perros </a>
+							<a className="nav-link active text-white" aria-current="page" href="#"> Perros </a>
 						</li>
 						<li className="nav-item">
-						<a className="nav-link text-white" href="#"> Gatos </a>
-						</li>	
-						<li className="nav-item">
-						<a className="nav-link text-white" href="#"> Roedores </a>
+							<Link className="nav-link text-white" to="/gatos">Gatos</Link>
 						</li>
 						<li className="nav-item">
-						<a className="nav-link text-white" href="#"> Peces </a>
+							<a className="nav-link text-white" href="#"> Roedores </a>
 						</li>
 						<li className="nav-item">
-						<a className="nav-link text-white" href="#"> Aves </a>
-						</li>										
+							<a className="nav-link text-white" href="#"> Peces </a>
+						</li>
+						<li className="nav-item">
+							<Link className="nav-link text-white" to="/aves">Aves</Link>
+						</li>
 					</ul>
 					<form className="d-flex gap-3" role="search">
 						<button className="btn btn-outline-light" type="submit"> Carrito </button>
