@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import PetsHome from "../../img/PetsHome.jpg";
 import "../../styles/home.css";
-import Card from "./cardhome";  // Importa tu nuevo componente Card
+import Card from "./cardhome";
+
 
 export const Home = () => {
     return (
         <div className="#">
-            <div className="container-fluid-center d-flex justify-content-center">                
+            <div className="container-fluid-center d-flex justify-content-center">
                 <h1><strong>Baxter Shop</strong></h1>
             </div>
 
