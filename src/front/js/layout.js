@@ -15,6 +15,7 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Details } from "./pages/details";
 import { Aves } from "./pages/aves";
+import { Gatos } from "./pages/gatos";
 
 
 
@@ -38,6 +39,7 @@ const Layout = () => {
                         <Route element={<Cart />} path="/cart" />
                         <Route element={<Pay />} path="/pay" />
                         <Route element={<Aves />} path="/aves" />
+                        <Route element={<Gatos />} path="/gatos" />
                         <Route element={<Details />} path="/detail/:id_product" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
