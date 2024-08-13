@@ -16,7 +16,7 @@ export const Gatos = () => {
                 <img className="w-50" src={logogato} alt="gatos" />
             </div>
             {/* Tarjetas de gatos */}
-            <div className="row">
+            {/* <div className="row">
                 {store.allGatos && store.allAves.length > 0 ? (
                     store.allGatos.map((gato, index) => (
                         <CardGatos key={index} nombre={gato.nombre} descripcion={gato.descripcion} imagen={gato.imagen} precio={gato.precio}/>
@@ -26,7 +26,7 @@ export const Gatos = () => {
                         <p>No hay gatos disponibles</p>
                     </div>
                 )}
-            </div>
+            </div> */}
         </div>
     );
 };

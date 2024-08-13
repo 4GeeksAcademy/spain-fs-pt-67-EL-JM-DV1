@@ -16,7 +16,7 @@ export const Aves = () => {
                 <img className="w-25" src={Logoave} alt="aves" />
             </div>
             {/* Tarjetas de Aves */}
-            <div className="row">
+            {/* <div className="row">
                 {store.allAves && store.allAves.length > 0 ? (
                     store.allAves.map((ave, index) => (
                         <CardAves key={index} nombre={ave.nombre} descripcion={ave.descripcion} imagen={ave.imagen} precio={ave.precio}/>
@@ -26,7 +26,7 @@ export const Aves = () => {
                         <p>No hay aves disponibles</p>
                     </div>
                 )}
-            </div>
+            </div> */}
         </div>
     );
 };
