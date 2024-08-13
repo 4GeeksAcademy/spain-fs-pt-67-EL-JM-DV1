@@ -16,8 +16,6 @@ import { Footer } from "./component/footer";
 import { Details } from "./pages/details";
 import { Aves } from "./pages/aves";
 import { Gatos } from "./pages/gatos";
-
-
 import DogCard from "./pages/DogCard";
 
 const Layout = () => {
