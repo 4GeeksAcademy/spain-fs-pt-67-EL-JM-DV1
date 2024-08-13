@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import logoperro from "../../img/logoperro.jpg";
+import logopez from "../../img/logopez.jpg";
 
 const DogCard = () => {
     const { store, actions } = useContext(Context);
@@ -11,23 +11,23 @@ const DogCard = () => {
     }, []);
 
     // Filtrar productos que pertenezcan a la categoría "Perros"
-    const dogProducts = store.allProducts.filter(product => product.category === "perros");
+    const pecesProducts = store.allProducts.filter(product => product.category === "peces");
 
-    if (dogProducts.length === 0) {
-        return <p>No hay productos en la categoría "Perros".</p>;
+    if (pecesProducts.length === 0) {
+        return <p>No hay productos en la categoría "Peces".</p>;
     }
 
     return (
         <div className="container-fluid-center justify-content-center mt-5 mb-5 row col-lg-6 col-md-6 col-sm-12">
             <div className="d-flex justify-content-center my-4">
-                <h1><strong>Perros</strong></h1>
+                <h1><strong>Peces</strong></h1>
             </div>
 
             <div className="d-flex justify-content-center mb-4">
-                <img className="w-50" src={logoperro} alt="gatos" />
+                <img className="w-50" src={logopez} alt="peces" />
             </div>
             <div className="container-fluid-center justify-content-center row col-md-6 col-sm-6 gap-3">
-                {dogProducts.map((product, index) => (
+                {pecesProducts.map((product, index) => (
                     <div key={index} className="card text-center" style={{ width: "18rem" }}>
                         <Link to={`/detail/${product.id}`} className="text-decoration-none text-dark">
                             <img src={product.image} className="card-img-top" alt={product.name} />
