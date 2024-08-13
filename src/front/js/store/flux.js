@@ -5,6 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			productDetails: {},
 			cart: [],
 			allProducts: [],
+			orderList: [],
 			dogProducts: [],
 			catProducts: [],
 			roedorProducts:[],
@@ -150,6 +151,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ ...getStore(), dogProducts: data.results });
 				} catch (error) {
 					console.log("Error al cargar los productos por categoría", error);
+				}
+			},
+
+			getProductsByCategory: async (category) => {
+                try {
+                    const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
+                    const data = await resp.json();
+                    setStore({ ...getStore(), dogProducts: data.results });
+                } catch (error) {
+                    console.log("Error al cargar los productos por categoría", error);
+                }
+            },
+
+			getAllOrders: async (token) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/order-list`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
+						}
+					});
+					const data = await resp.json();
+
+					setStore({ ...getStore(), orderList: data.results });
+				} catch (error) {
+					console.log.apply("Error al cargar la lista de pedidos", error);
 				}
 			},
 
