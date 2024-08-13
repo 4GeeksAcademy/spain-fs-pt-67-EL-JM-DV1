@@ -1,24 +1,17 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			],
+			
 			productDetails: {},
 			cart: [],
 			allProducts: [],
-            dogProducts: [],
-			orderList: []
+			orderList: [],
+			dogProducts: [],
+			catProducts: [],
+			roedorProducts:[],
+			avesProducts:[],
+			pecesProducts:[],
+
 		},
 		actions: {
 
@@ -50,37 +43,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			// Use getActions to call a function within a function
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+			// // Use getActions to call a function within a function
+			// exampleFunction: () => {
+			// 	getActions().changeColor(0, "green");
+			// },
 
-			getMessage: async () => {
-				try {
-					const resp = await fetch('https://musical-spoon-q77j9grp6w74f49px-3001.app.github.dev/api/hello');
-					const data = await resp.json();
-					setStore({ message: data.message });
-					// don't forget to return something, that is how the async resolves
-					return data;
-				} catch (error) {
-					console.log("Error loading message from backend", error);
-				}
-			},
+			// getMessage: async () => {
+			// 	try {
+			// 		const resp = await fetch('https://musical-spoon-q77j9grp6w74f49px-3001.app.github.dev/api/hello');
+			// 		const data = await resp.json();
+			// 		setStore({ message: data.message });
+			// 		// don't forget to return something, that is how the async resolves
+			// 		return data;
+			// 	} catch (error) {
+			// 		console.log("Error loading message from backend", error);
+			// 	}
+			// },
 
-			changeColor: (index, color) => {
-				// get the store
-				const store = getStore();
+			// changeColor: (index, color) => {
+			// 	// get the store
+			// 	const store = getStore();
 
-				// we have to loop the entire demo array to look for the respective index
-				// and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+			// 	// we have to loop the entire demo array to look for the respective index
+			// 	// and change its color
+			// 	const demo = store.demo.map((elm, i) => {
+			// 		if (i === index) elm.background = color;
+			// 		return elm;
+			// 	});
 
-				// reset the global store
-				setStore({ demo: demo });
-			},
+			// 	// reset the global store
+			// 	setStore({ demo: demo });
+			// },
 
 			// Ação para adicionar um item ao carrinho
 			addToCart: (product) => {
@@ -136,14 +129,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getAllProducts: async () => {
+                try {
+                    const resp = await fetch(process.env.BACKEND_URL + `/api/products`);
+                    if (resp.ok) {
+                        const data = await resp.json();
+                        console.log("Fetched all products:", data.results);
+                        setStore({ allProducts: data.results });
+                    } else {
+                        console.log("Error fetching products", resp.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error fetching products", error);
+                }
+            },
+		
+
+			getProductsByCategory: async (category) => {
 				try {
-					const resp = await fetch(process.env.BACKEND_URL + `/api/products`);
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
 					const data = await resp.json();
-
-					setStore({ ...getStore(), allProducts: data.results });
+					setStore({ ...getStore(), dogProducts: data.results });
 				} catch (error) {
-					console.log("Error al cargar los productos", error);
-
+					console.log("Error al cargar los productos por categoría", error);
 				}
 			},
 
@@ -172,7 +179,47 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log.apply("Error al cargar la lista de pedidos", error);
 				}
-			}
+			},
+
+			getProductsByCategory: async (category) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
+					const data = await resp.json();
+					setStore({ ...getStore(), catProducts: data.results });
+				} catch (error) {
+					console.log("Error al cargar los productos por categoría", error);
+				}
+			},
+
+			getProductsByCategory: async (category) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
+					const data = await resp.json();
+					setStore({ ...getStore(), roedorProducts: data.results });
+				} catch (error) {
+					console.log("Error al cargar los productos por categoría", error);
+				}
+			},
+
+			getProductsByCategory: async (category) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
+					const data = await resp.json();
+					setStore({ ...getStore(), avesProducts: data.results });
+				} catch (error) {
+					console.log("Error al cargar los productos por categoría", error);
+				}
+			},
+
+			getProductsByCategory: async (category) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
+					const data = await resp.json();
+					setStore({ ...getStore(), pecesProducts: data.results });
+				} catch (error) {
+					console.log("Error al cargar los productos por categoría", error);
+				}
+			},
 
 
 		}

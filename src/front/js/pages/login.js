@@ -54,7 +54,7 @@ export const Login = () => {
                 <button type="submit" className="btn btn-primary mt-3">Login</button>
             </form>
             <br />
-            <Link to="/register">
+            <Link to="/registro">
                 <button className="btn btn-secondary">Registro</button>
             </Link>
         </div>
