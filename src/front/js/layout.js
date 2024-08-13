@@ -14,10 +14,11 @@ import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Details } from "./pages/details";
-import { Aves } from "./pages/aves";
-import { Gatos } from "./pages/gatos";
 import DogCard from "./pages/DogCard";
-
+import CatCard from "./pages/CatCard";
+import AveCard from "./pages/AveCard";
+import RoedorCard from "./pages/RoedorCard";
+import PezCard from "./pages/PezCard";
 const Layout = () => {
     const basename = process.env.BASENAME || "";
 
@@ -35,11 +36,13 @@ const Layout = () => {
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Login />} path="/login" />
                         <Route element={<Product />} path="/products" />
-                        <Route elementt={DogCard} path="/perros" />
                         <Route element={<Cart />} path="/cart" />
                         <Route element={<Pay />} path="/pay" />
-                        <Route element={<Aves />} path="/aves" />
-                        <Route element={<Gatos />} path="/gatos" />
+                        <Route element={<DogCard />} path="/perros" />
+                        <Route element={<CatCard />} path="/gatos" />
+                        <Route element={<RoedorCard />} path="/roedores" />
+                        <Route element={<AveCard />} path="/aves" />
+                        <Route element={<PezCard />} path="/peces" />
                         <Route element={<Details />} path="/detail/:id_product" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
