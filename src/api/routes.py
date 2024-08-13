@@ -365,3 +365,18 @@ def get_products_by_category():
     return jsonify(response_body), 200
 
 
+# Listar todos los pedidos de un usuario
+@api.route('/order-list', methods=['GET'])
+@jwt_required()
+def getAllUserOrders():
+    # recuperar usuario
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email = current_user).first()
+
+    # Consultar la tabla Order filtrando por el usuario
+    order_all = Order.query.filter_by(user_id=user.id).all()
+
+    # Creamos la lista de pedidos con el resultado de la consulta de la tabla Order
+    orders = list(map(lambda order: order.serialize(), order_all))
+
+    return jsonify({"msg": "Lista de pedidos del usuario", "results": orders}), 200
