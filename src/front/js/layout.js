@@ -14,7 +14,6 @@ import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Details } from "./pages/details";
-import DogCard from "./pages/DogCard";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -32,8 +31,7 @@ const Layout = () => {
                         <Route element={<Registro />} path="/registro" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Login />} path="/login" />
-                        <Route element={<Product />} path="/products" />
-                        <Route elementt={DogCard} path="/perros" />
+                        <Route element={<Product />} path="/products" />                        
                         <Route element={<Cart />} path="/cart" />
                         <Route element={<Pay />} path="/pay" />
                         <Route element={<Details />} path="/detail/:id_product" />
