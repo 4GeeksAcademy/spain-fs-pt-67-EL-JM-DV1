@@ -380,3 +380,38 @@ def getAllUserOrders():
     orders = list(map(lambda order: order.serialize(), order_all))
 
     return jsonify({"msg": "Lista de pedidos del usuario", "results": orders}), 200
+
+# Listar todos los productos de un pedido por usuario
+@api.route('/order-items/<int:id_order>', methods=['GET'])
+@jwt_required()
+def getAllItems(id_order):
+    # recuperar usuario
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email = current_user).first()
+
+    # Consultar Order con el ID del pedido para comprobar el estado del pedido
+    order = Order.query.filter_by(user_id = user.id, id = id_order).first()
+
+    # Consultar la tabla OrderItems filtrando por el ID del pedido
+    order_items_all = OrderItems.query.filter_by(order_id = id_order).all()
+
+    # Crear una lista para almacenar los datos combinados
+    items_list = []
+
+    # Recorrer los elementos de OrderItems
+    for order_item in order_items_all:
+        # Consultar el producto relacionado con este order_item
+        producto = Product.query.get(order_item.product_id)
+
+        # Crear un diccionario con la información necesaria
+        item_data = {
+            "product_name": producto.name,
+            "product_image": producto.image,
+            "quantity": order_item.quantity
+        }
+
+        # Agregar el diccionario a la lista
+        items_list.append(item_data)
+
+
+    return jsonify( {"msg": "Lista de productos del pedido", "results": items_list, "status": order.serialize()} ), 200

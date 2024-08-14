@@ -11,7 +11,12 @@ export const User = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        actions.getAllOrders(token);
+
+        if (token) {
+            actions.getAllOrders(token);
+        } else {
+            navigate('/login');
+        }
     }, []);
 
     const handleCloseSession = () => {
