@@ -9,7 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			catProducts: [],
 			roedorProducts:[],
 			avesProducts:[],
-			pecesProducts:[],
+			pecesProducts:[]
 
 		},
 		actions: {
