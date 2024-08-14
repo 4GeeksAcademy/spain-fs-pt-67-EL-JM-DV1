@@ -10,7 +10,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			catProducts: [],
 			roedorProducts:[],
 			avesProducts:[],
-			pecesProducts:[]
+			pecesProducts:[],
+			orderItems: [],
+			orderStatus: {}
 
 		},
 		actions: {
@@ -221,7 +223,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getAllItems: async (token, id_order) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/order-items/${id_order}`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
+						}
+					});
+					const data = await resp.json();
 
+					setStore({ ...getStore(), orderItems: data.results, orderStatus: data.status });
+				} catch (error) {
+					console.log("Erro al cargar los productos del pedido", error);
+				}
+			}
 		}
 	};
 };
