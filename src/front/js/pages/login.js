@@ -13,7 +13,7 @@ export const Login = () => {
         e.preventDefault();
         const success = await actions.login(email, password);
         if (success) {
-            navigate("/");
+            navigate("/user"); // Altere o redirecionamento para a página de usuário
         } else {
             // Atualiza o estado de erro para exibir a mensagem na tela
             setError("No existe una cuenta con ese e-mail. Por favor, revisa si está correcto o regístrate creando una cuenta.");

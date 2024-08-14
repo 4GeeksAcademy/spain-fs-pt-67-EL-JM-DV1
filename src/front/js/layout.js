@@ -7,6 +7,7 @@ import { Demo } from "./pages/demo";
 import { Registro } from "./pages/registro";
 import { Single } from "./pages/single";
 import { Login } from "./pages/login";
+import { User } from "./pages/user";
 import { Product } from "./pages/product";
 import Cart from "./pages/cart";
 import Pay from "./pages/pay";
@@ -15,7 +16,10 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Details } from "./pages/details";
 import DogCard from "./pages/DogCard";
-
+import CatCard from "./pages/CatCard";
+import AveCard from "./pages/AveCard";
+import RoedorCard from "./pages/RoedorCard";
+import PezCard from "./pages/PezCard";
 const Layout = () => {
     const basename = process.env.BASENAME || "";
 
@@ -32,10 +36,15 @@ const Layout = () => {
                         <Route element={<Registro />} path="/registro" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Login />} path="/login" />
+                        <Route element={<User />} path="/user" />
                         <Route element={<Product />} path="/products" />
-                        <Route elementt={DogCard} path="/perros" />
                         <Route element={<Cart />} path="/cart" />
                         <Route element={<Pay />} path="/pay" />
+                        <Route element={<DogCard />} path="/perros" />
+                        <Route element={<CatCard />} path="/gatos" />
+                        <Route element={<RoedorCard />} path="/roedores" />
+                        <Route element={<AveCard />} path="/aves" />
+                        <Route element={<PezCard />} path="/peces" />
                         <Route element={<Details />} path="/detail/:id_product" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
