@@ -277,6 +277,26 @@ def get_one_Order(order_id):
         "result": Order_query.serialize()
     }
     return jsonify(response_body), 200
+# Order Status---------------------------------------------------------------------------------------
+@api.route('/order-status/<int:order_id>', methods=['GET'])
+@jwt_required()
+def get_order_status(order_id):
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email=current_user).first()
+
+    # Verificar se o pedido existe e pertence ao usuário
+    order = Order.query.filter_by(id=order_id, user_id=user.id).first()
+
+    if not order:
+        return jsonify({"msg": "Order not found or does not belong to the user"}), 404
+
+    response_body = {
+        "order_id": order.id,
+        "status": order.orderstatus.name  # assuming orderstatus is an enum
+    }
+
+    return jsonify(response_body), 200
+
 
 # Crear pedido y agregar producto al carrito
 @api.route('/cesta', methods=['POST'])
