@@ -11,6 +11,7 @@ class Category(Enum):
     PAJAROS = "pájaros"
 
 class OrderStatus(Enum):
+    PENDIENTE = "Pendiente de pago"
     RECIBIDO = "Pedido recibido"
     PREPARACION = "En preparación"
     ENVIADO = "Enviado"
@@ -90,3 +91,4 @@ class OrderItems(db.Model):
             "product_id": self.product_id,
             "quantity": self.quantity
         }
+

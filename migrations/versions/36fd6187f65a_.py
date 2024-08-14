@@ -1,8 +1,14 @@
 """empty message
 
-Revision ID: 77e14d4b08a3
+<<<<<<<< HEAD:migrations/versions/4fa18a5a4fa7_.py
+Revision ID: 4fa18a5a4fa7
 Revises: 
-Create Date: 2024-08-05 18:57:43.358848
+Create Date: 2024-08-07 19:21:15.180887
+========
+Revision ID: 36fd6187f65a
+Revises: 
+Create Date: 2024-08-11 06:53:08.100144
+>>>>>>>> 6112490c08d3de55235446e2115c84ac65d07bfe:migrations/versions/36fd6187f65a_.py
 
 """
 from alembic import op
@@ -10,7 +16,11 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '77e14d4b08a3'
+<<<<<<<< HEAD:migrations/versions/4fa18a5a4fa7_.py
+revision = '4fa18a5a4fa7'
+========
+revision = '36fd6187f65a'
+>>>>>>>> 6112490c08d3de55235446e2115c84ac65d07bfe:migrations/versions/36fd6187f65a_.py
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -41,7 +51,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('total_amount', sa.Numeric(precision=10, scale=2), nullable=False),
-    sa.Column('order_status', sa.Enum('RECIBIDO', 'PREPARACION', 'ENVIADO', 'ENTREGADO', name='orderstatus'), nullable=False),
+    sa.Column('order_status', sa.Enum('PENDIENTE', 'RECIBIDO', 'PREPARACION', 'ENVIADO', 'ENTREGADO', name='orderstatus'), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
