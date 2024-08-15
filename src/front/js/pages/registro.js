@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getState } from '../flux/store';
+
 
 export function Registro() {
     const [name, setName] = useState("");
