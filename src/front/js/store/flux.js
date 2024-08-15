@@ -43,6 +43,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+
+			registro: async (name, email, password, address) => {
+				try {
+					let response = await fetch('https://musical-spoon-q77j9grp6w74f49px-3001.app.github.dev/api/registro', {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							"name": name,
+							"email": email,
+							"password": password,
+							"address": address 
+						})
+					});
+		
+					if (response.ok) {
+						const data = await response.json();
+						localStorage.setItem("token", data.token); // Almacena el token en el localStorage si es necesario
+						return true;
+					} else {
+						console.error("Register failed:", response.statusText);
+						return false;
+					}
+				} catch (error) {
+					console.error("Register error:", error);
+					return false;
+				}
+			},
+
 			// // Use getActions to call a function within a function
 			// exampleFunction: () => {
 			// 	getActions().changeColor(0, "green");
