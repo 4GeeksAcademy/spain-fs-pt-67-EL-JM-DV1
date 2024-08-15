@@ -8,7 +8,7 @@ export function Registro() {
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const [address, setAddress] = useState("");
-    const [error, setError] = useState(""); // Para mostrar mensajes de error
+    const [error, setError] = useState(""); 
     const navigate = useNavigate();
     const { actions } = getState(); // Accede a las acciones del store
 
