@@ -10,11 +10,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			orderList: [],
 			dogProducts: [],
 			catProducts: [],
-			roedorProducts: [],
-			avesProducts: [],
-			pecesProducts: [],
-			orderItems: [],
-			orderStatus: {}
+			roedorProducts:[],
+			avesProducts:[],
+			pecesProducts:[],
+			cartCount: 0
 
 		},
 		actions: {
@@ -111,9 +110,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"price": product_details.price
 						})
 					});
-
+			
 					const data = await resp.json();
-
+			
 					if (data.result) {
 						const store = getStore();
 						const updatedCart = [...store.cart, product_details];
@@ -127,6 +126,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
+			
+
 
 
 			getProductDetails: async (product_id) => {

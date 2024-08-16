@@ -1,7 +1,9 @@
+// details.js
+
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
-import "../../styles/index.css"
+import "../../styles/index.css";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Details = () => {
@@ -25,10 +27,10 @@ export const Details = () => {
 
     useEffect(() => {
         actions.getProductDetails(id_product);
-    }, []);
+    }, [id_product]);
 
     return (
-        <div className="container" style={{ 'minHeight': '500px'}}>
+        <div className="container" style={{ 'minHeight': '500px' }}>
             <div className="card mb-3 mt-5 mx-auto border-0" style={{ 'width': '800px' }}>
                 <div className="row g-0">
                     <div className="col-md-4">

@@ -40,10 +40,11 @@ export const Navbar = () => {
 								</span>
 							)}
 						</Link>
-						<Link className="btn btn-outline-light" to="/login"> Login </Link>
+						<Link className="btn btn-outline-light" to="/login"> Usuario </Link>
 					</form>
 				</div>
 			</div>
 		</nav>
 	);
 };
+
