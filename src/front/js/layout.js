@@ -21,6 +21,7 @@ import AveCard from "./pages/AveCard";
 import RoedorCard from "./pages/RoedorCard";
 import PezCard from "./pages/PezCard";
 import { Order } from "./pages/order";
+import Checkout from "./pages/checkout";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -43,6 +44,7 @@ const Layout = () => {
                         <Route element={<Product />} path="/products" />
                         <Route element={<Cart />} path="/cart" />
                         <Route element={<Pay />} path="/pay" />
+                        <Route element={<Checkout />} path="/checkout" />
                         <Route element={<DogCard />} path="/perros" />
                         <Route element={<CatCard />} path="/gatos" />
                         <Route element={<RoedorCard />} path="/roedores" />

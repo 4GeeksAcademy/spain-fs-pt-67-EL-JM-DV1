@@ -35,6 +35,7 @@ export const Order = () => {
                     <h1>Bienvenido!</h1>
                     <h2>Aqui puedes ver los productos de tu pedido:</h2>
                     <h3>Pedido: #{store.orderStatus.id} - Estado del Pedido: {store.orderStatus.order_status}</h3>
+                    <h3>Precio total: {store.orderStatus.total_amount}€</h3>
                 </div>
 
                 <div className="container" style={{ 'maxWidth': '500px' }}>
@@ -47,7 +48,7 @@ export const Order = () => {
                                         <img src={item.product_image} class="img-fluid rounded-start" alt="..." />
                                     </div>
                                     <div className="col-8">
-                                        {item.product_name}: {item.quantity}
+                                        {item.product_name}: {item.quantity} x {item.price}€
                                     </div>
                                 </div>
                             </li>
