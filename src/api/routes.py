@@ -70,7 +70,7 @@ def order_user():
     return jsonify(response_body), 200
 
 # REGISTRO-------------------------------------------------------------------------------------------
-@api.route('/api/registro', methods=['POST'])
+@api.route('/registro', methods=['POST'])
 def registro():
     body = request.json
 
