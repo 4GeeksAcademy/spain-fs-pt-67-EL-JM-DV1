@@ -13,7 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			roedorProducts:[],
 			avesProducts:[],
 			pecesProducts:[],
-			cartCount: 0
+			cartCount: 0,
+			orderItems: [],
+			orderStatus: {}
 
 		},
 		actions: {
