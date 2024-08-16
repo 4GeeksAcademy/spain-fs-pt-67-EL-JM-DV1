@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
+
+
 export function Registro() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const [address, setAddress] = useState("");
-    const [error, setError] = useState(""); 
+    const [error, setError] = useState("");
     const navigate = useNavigate();
-    const { actions } = getState(); // Accede a las acciones del store
+    
 
     const handleRegistro = async (e) => {
         e.preventDefault();
@@ -59,6 +61,16 @@ export function Registro() {
                     />
                 </div>
                 <div className="mb-3">
+                    <label className="form-label">Dirección:</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
                     <label className="form-label">Contraseña:</label>
                     <input
                         type="password"
@@ -75,16 +87,6 @@ export function Registro() {
                         className="form-control"
                         value={password2}
                         onChange={(e) => setPassword2(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Dirección:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
                         required
                     />
                 </div>

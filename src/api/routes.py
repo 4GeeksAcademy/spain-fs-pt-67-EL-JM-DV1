@@ -93,6 +93,7 @@ def registro():
         address=body['address'],  
         is_active=True
     )
+    
 
     try:
         db.session.add(new_user)
@@ -102,6 +103,7 @@ def registro():
 
     access_token = create_access_token(identity=new_user.email)
     return jsonify({"msg": "Usuario registrado exitosamente", "token": access_token}), 201
+
 
 # USER-----------------------------------------------------------------------------------------------
 #Create a User

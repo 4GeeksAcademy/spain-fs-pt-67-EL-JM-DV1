@@ -46,7 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			registro: async (email, password) => {
 				try {
 					// Actualiza la URL del backend para la ruta de registro
-					let response = await fetch('https://musical-spoon-q77j9grp6w74f49px-3001.app.github.dev/api/registro', {
+					let response = await fetch('https://bookish-guacamole-69v5vr55jj5pfpq6-3001.app.github.dev/api/registro', {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json"
