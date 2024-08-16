@@ -92,16 +92,28 @@ def create_user():
     if 'is_active' not in body:
         return 'Debes especificar si el usuario está activo', 400
 
-    user = User(name = body["name"], address = body["address"], email = body["email"], password = body["password"], is_active = body["is_active"])
+    # Verificar se o email já está cadastrado
+    existing_user = User.query.filter_by(email=body['email']).first()
+    if existing_user:
+        return jsonify({"msg": "O email já está cadastrado. Tente com um diferente."}), 409
+
+    # Criar um novo usuário
+    user = User(
+        name=body["name"],
+        address=body["address"],
+        email=body["email"],
+        password=body["password"],
+        is_active=body["is_active"]
+    )
     db.session.add(user)
     db.session.commit()
 
     response_body = {
-        "msg": "Usuario creado!",
+        "msg": "Usuário criado!",
         "id": user.id
     }
 
-    return jsonify(response_body), 200
+    return jsonify(response_body), 201  
 
 #Get all users
 @api.route('/users', methods=['GET'])
