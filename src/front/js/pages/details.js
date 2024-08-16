@@ -19,8 +19,9 @@ export const Details = () => {
             }
         } else {
             navigate('/login');
-        }
-    }
+        };
+    };
+    
 
     useEffect(() => {
         actions.getProductDetails(id_product);
