@@ -314,6 +314,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log("Erro al cargar los productos del pedido", error);
 				}
+			},
+
+			success: async (token) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + '/api/success', {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
+						},
+						body: JSON.stringify({
+							payed: true
+						})
+					});
+
+					const data = await resp.json();
+				} catch (error) {
+					console.log("Error al procesar el pago de la compra!", error);
+				}
 			}
 		}
 	};
