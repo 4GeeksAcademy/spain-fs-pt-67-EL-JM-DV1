@@ -94,16 +94,28 @@ def create_user():
     if 'is_active' not in body:
         return 'Debes especificar si el usuario está activo', 400
 
-    user = User(name = body["name"], address = body["address"], email = body["email"], password = body["password"], is_active = body["is_active"])
+    # Verificar se o email já está cadastrado
+    existing_user = User.query.filter_by(email=body['email']).first()
+    if existing_user:
+        return jsonify({"msg": "O email já está cadastrado. Tente com um diferente."}), 409
+
+    # Criar um novo usuário
+    user = User(
+        name=body["name"],
+        address=body["address"],
+        email=body["email"],
+        password=body["password"],
+        is_active=body["is_active"]
+    )
     db.session.add(user)
     db.session.commit()
 
     response_body = {
-        "msg": "Usuario creado!",
+        "msg": "Usuário criado!",
         "id": user.id
     }
 
-    return jsonify(response_body), 200
+    return jsonify(response_body), 201  
 
 #Get all users
 @api.route('/users', methods=['GET'])
@@ -285,6 +297,26 @@ def get_one_Order(order_id):
         "result": Order_query.serialize()
     }
     return jsonify(response_body), 200
+# Order Status---------------------------------------------------------------------------------------
+@api.route('/order-status/<int:order_id>', methods=['GET'])
+@jwt_required()
+def get_order_status(order_id):
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email=current_user).first()
+
+    # Verificar se o pedido existe e pertence ao usuário
+    order = Order.query.filter_by(id=order_id, user_id=user.id).first()
+
+    if not order:
+        return jsonify({"msg": "Order not found or does not belong to the user"}), 404
+
+    response_body = {
+        "order_id": order.id,
+        "status": order.orderstatus.name  # assuming orderstatus is an enum
+    }
+
+    return jsonify(response_body), 200
+
 
 # Crear pedido y agregar producto al carrito
 @api.route('/cesta', methods=['POST'])
