@@ -10,11 +10,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			orderList: [],
 			dogProducts: [],
 			catProducts: [],
-			roedorProducts: [],
-			avesProducts: [],
-			pecesProducts: [],
-			orderItems: [],
-			orderStatus: {}
+			roedorProducts:[],
+			avesProducts:[],
+			pecesProducts:[],
+			cartCount: 0
 
 		},
 		actions: {
@@ -110,16 +109,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"id": product_details.id,
 							"price": product_details.price
 						})
-
 					});
-
+			
 					const data = await resp.json();
-
-					return data.result;
+			
+					if (data.result) {
+						const store = getStore();
+						const updatedCart = [...store.cart, product_details];
+						setStore({ cart: updatedCart });
+						return true;
+					} else {
+						return false;
+					}
 				} catch (error) {
-					console.log("Error al añadir prducto al carrito", error);
+					console.log("Error al añadir producto al carrito", error);
+					return false;
 				}
 			},
+			
+
+
 
 			getProductDetails: async (product_id) => {
 				try {
@@ -270,7 +279,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 					body: JSON.stringify({
 						name: 'Baxter Shop - Pedido: #' + id,
-						amount: total*100,  // en centavos (5000 centavos = 50.00 USD)
+						amount: total * 100,  // en centavos (5000 centavos = 50.00 USD)
 						quantity: 1,
 					}),
 				});
