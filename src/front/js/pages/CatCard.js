@@ -21,7 +21,7 @@ const CatCard = () => {
         <div className="container">
             <div className="text-center mb-4">
                 <h1><strong></strong></h1>
-                <img className="w-25" src={logogato} alt="gato" />
+                <img className="w-50" src={logogato} alt="gato" />
             </div>
             <div className="row">
                 {catProducts.map((product, index) => (

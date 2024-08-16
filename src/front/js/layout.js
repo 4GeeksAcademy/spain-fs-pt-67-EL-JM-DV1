@@ -22,6 +22,8 @@ import RoedorCard from "./pages/RoedorCard";
 import PezCard from "./pages/PezCard";
 import { Order } from "./pages/order";
 import Checkout from "./pages/checkout";
+import { Success } from "./pages/success";
+import { Cancel } from "./pages/cancel";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -45,6 +47,8 @@ const Layout = () => {
                         <Route element={<Cart />} path="/cart" />
                         <Route element={<Pay />} path="/pay" />
                         <Route element={<Checkout />} path="/checkout" />
+                        <Route element={<Success />} path="/success" />
+                        <Route element={<Cancel />} path="/cancel" />
                         <Route element={<DogCard />} path="/perros" />
                         <Route element={<CatCard />} path="/gatos" />
                         <Route element={<RoedorCard />} path="/roedores" />

@@ -26,6 +26,8 @@ stripe.api_key = 'sk_test_51Po4fAJA9bLtD1vVbJmjVxmEbMFcfoPV4M7aNLDksHg85U90JAl8E
 
 @api.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
+    url_frontend = os.getenv('FRONTEND_URL')
+
     try:
         data = request.get_json()
 
@@ -42,8 +44,8 @@ def create_checkout_session():
                 'quantity': data['quantity'],
             }],
             mode='payment',
-            success_url='http://localhost:3000/success',
-            cancel_url='http://localhost:3000/cancel',
+            success_url = url_frontend + '/success',
+            cancel_url = url_frontend + '/cancel',
         )
 
         return jsonify({'id': session.id})
@@ -530,3 +532,24 @@ def removeItemKart():
     db.session.commit()
 
     return jsonify( {"msg": "El producto fue quitado del carrito!"} ), 200
+
+@api.route('/success', methods=['PUT'])
+@jwt_required()
+def success():
+    # recuperar usuario
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email = current_user).first()
+
+    # recuperar información del frontend
+    data = request.get_json()
+    payed = data['payed']
+
+    if payed:
+        # Consultar Order con el ID del usuario y que tenga status pendiente para actualizarlo a recibido
+        order = Order.query.filter_by(user_id = user.id, order_status = OrderStatus.PENDIENTE).first()
+        order.order_status = OrderStatus.RECIBIDO
+        db.session.commit()
+
+        return jsonify( {"msg": "El estado del pedido ha sido actualizado!"} ), 200
+    else:
+        return jsonify( {"msg": "Error al actualizar el estado del pedido!"} ), 400
