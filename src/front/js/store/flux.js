@@ -10,9 +10,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			orderList: [],
 			dogProducts: [],
 			catProducts: [],
-			roedorProducts:[],
-			avesProducts:[],
-			pecesProducts:[],
+			roedorProducts: [],
+			avesProducts: [],
+			pecesProducts: [],
 			cartCount: 0
 
 		},
@@ -21,7 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			login: async (email, password) => {
 				try {
 					// Atualize a URL do backend aqui
-					let response = await fetch('https://musical-spoon-q77j9grp6w74f49px-3001.app.github.dev/api/login', {
+					let response = await fetch(process.env.BACKEND_URL + `/api/login`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json"
@@ -110,9 +110,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"price": product_details.price
 						})
 					});
-			
+
 					const data = await resp.json();
-			
+
 					if (data.result) {
 						const store = getStore();
 						const updatedCart = [...store.cart, product_details];
@@ -126,7 +126,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
-			
+
 
 
 
