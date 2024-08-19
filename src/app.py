@@ -11,14 +11,26 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from api.models import db, User, Product, OrderItems, Order
+from flask_mail import Mail, Message
+from dotenv import load_dotenv
 
-# from models import Person
+load_dotenv()
+app = Flask(__name__)
+
+# Configurar Flask-Mail
+app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = 'c3dfb7cbfc7895'
+app.config['MAIL_PASSWORD'] = 'e6a36cf9f4457b'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+mail = Mail(app)
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 
-app = Flask(__name__)
 
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # Cambia esto por una clave secreta segura
 jwt = JWTManager(app)
@@ -70,6 +82,22 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+
+@app.route('/send-email', methods=['POST'])
+def send_email():
+    data = request.get_json()
+    print(data)
+    msg = Message('Hello from Mailtrap',
+                  sender='eduloreto242@gmail.com',
+                  recipients=[data['email']])
+    msg.body = 'This is a test email sent from a Flask app using Mailtrap.'
+
+    try:
+        mail.send(msg)
+        return jsonify({"msg": "Email sent successfully"}), 200
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 500    
 
 
 # this only runs if `$ python src/main.py` is executed

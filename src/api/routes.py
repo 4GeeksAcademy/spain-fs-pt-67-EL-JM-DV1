@@ -11,9 +11,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
 from decimal import Decimal
 
+
 api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
+
 # Hello/Prueba ------------------------------------------------------------------------------------
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
