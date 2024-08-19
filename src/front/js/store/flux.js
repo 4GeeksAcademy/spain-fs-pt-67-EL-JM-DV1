@@ -48,6 +48,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			registro: async (email, password) => {
+				try {
+					// Actualiza la URL del backend para la ruta de registro
+					let response = await fetch('https://bookish-guacamole-69v5vr55jj5pfpq6-3001.app.github.dev/api/registro', {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							"email": email,
+							"password": password
+						})
+					});
+			
+					if (response.ok) {
+						const data = await response.json();
+						localStorage.setItem("token", data.access_token);
+						return true;
+					} else {
+						console.error("Registro fallido:", response.statusText);
+						return false;
+					}
+				} catch (error) {
+					console.error("Error en el registro:", error);
+					return false;
+				}
+			},
+			
+
+
+		
+
 			// // Use getActions to call a function within a function
 			// exampleFunction: () => {
 			// 	getActions().changeColor(0, "green");

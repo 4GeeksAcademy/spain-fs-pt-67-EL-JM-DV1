@@ -118,7 +118,6 @@ export function Registro() {
                         required
                     />
                 </div>
-
                 <div className="mb-3">
                     <label className="form-label">Confirmar Contraseña:</label>
                     <input

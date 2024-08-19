@@ -20,10 +20,10 @@ class OrderStatus(Enum):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), unique=False, nullable=False)
-    address = db.Column(db.String(200), unique=False, nullable=False)
-    email = db.Column(db.String(40), unique=True, nullable=False)
-    password = db.Column(db.String(20), unique=False, nullable=False)
-    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    address = db.Column(db.String(255), unique=False, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(255), unique=False, nullable=False)
+    is_active = db.Column(db.Boolean(), unique=False, nullable=True)
 
     def __repr__(self):
         return '<User %r>' % self.id

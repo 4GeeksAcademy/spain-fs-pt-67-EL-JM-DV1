@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint, redirect
 from api.models import db, User, Product, Order, OrderItems, Category, OrderStatus
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
 from decimal import Decimal
 
@@ -75,6 +76,43 @@ def order_user():
         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
     }
     return jsonify(response_body), 200
+
+# REGISTRO-------------------------------------------------------------------------------------------
+@api.route('/registro', methods=['POST'])
+def registro():
+    body = request.json
+
+    if not body:
+        return jsonify({"msg": "El cuerpo de la solicitud está vacío"}), 400
+    if 'name' not in body:
+        return jsonify({"msg": 'Debes especificar el nombre (name)'}), 400
+    if 'email' not in body:
+        return jsonify({"msg": 'Debes especificar un correo electrónico (email)'}), 400
+    if 'password' not in body:
+        return jsonify({"msg": 'Debes especificar una contraseña (password)'}), 400
+    if 'address' not in body:
+        return jsonify({"msg": 'Debes especificar una dirección (address)'}), 400
+
+    hashed_password = generate_password_hash(body['password'])
+    new_user = User(
+        name=body['name'],
+        email=body['email'],
+        password=hashed_password,
+        address=body['address'],  
+        is_active=True
+    )
+    
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"msg": "Error al registrar el usuario", "error": str(e)}), 500
+
+    access_token = create_access_token(identity=new_user.email)
+    return jsonify({"msg": "Usuario registrado exitosamente", "token": access_token}), 201
+
+
 # USER-----------------------------------------------------------------------------------------------
 #Create a User
 @api.route('/user', methods=['POST'])
