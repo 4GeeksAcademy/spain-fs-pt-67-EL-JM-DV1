@@ -10,28 +10,12 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
 from decimal import Decimal
-from flask_mail import Message
-from your_app_name import mail
-
-@api.route('/send-email', methods=['POST'])
-def send_email():
-    data = request.get_json()
-
-    msg = Message('Hello from Mailtrap',
-                  sender='from@example.com',
-                  recipients=[data['email']])
-    msg.body = 'This is a test email sent from a Flask app using Mailtrap.'
-
-    try:
-        mail.send(msg)
-        return jsonify({"msg": "Email sent successfully"}), 200
-    except Exception as e:
-        return jsonify({"msg": str(e)}), 500
 
 
 api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
+
 # Hello/Prueba ------------------------------------------------------------------------------------
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():

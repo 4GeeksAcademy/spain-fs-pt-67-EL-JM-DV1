@@ -84,6 +84,22 @@ def serve_any_other_file(path):
     return response
 
 
+@app.route('/send-email', methods=['POST'])
+def send_email():
+    data = request.get_json()
+    print(data)
+    msg = Message('Hello from Mailtrap',
+                  sender='eduloreto242@gmail.com',
+                  recipients=[data['email']])
+    msg.body = 'This is a test email sent from a Flask app using Mailtrap.'
+
+    try:
+        mail.send(msg)
+        return jsonify({"msg": "Email sent successfully"}), 200
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 500    
+
+
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
