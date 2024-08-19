@@ -5,7 +5,7 @@ export function Registro() {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [numero, setNumero] = useState("");
+    //const [numero, setNumero] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const [error, setError] = useState("");
@@ -22,10 +22,10 @@ export function Registro() {
 
         // Estructura el cuerpo de la solicitud
         const requestBody = {
-            name,
-            address: numero,
-            email,
-            password,
+            name:"Nombre",
+            address:"Apellido",
+            email:"Email",
+            password:"Contraseña",
             is_active: true
         };
 
@@ -92,18 +92,6 @@ export function Registro() {
                         placeholder="nombre@ejemplo.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">Teléfono:</label>
-                    <input
-                        type="tel"
-                        className="form-control"
-                        placeholder="xxxx xxxx"
-                        value={numero}
-                        onChange={(e) => setNumero(e.target.value)}
                         required
                     />
                 </div>
