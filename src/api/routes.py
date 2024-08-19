@@ -22,29 +22,37 @@ def handle_hello():
     }
     return jsonify(response_body), 200
 # API-----------------------------------------------------------------------------------------------
-stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
-# app = Flask(__name__,
-#             static_url_path='',
-#             static_folder='public')
-YOUR_DOMAIN = 'http://localhost:4242'
+# Clave secreta de Stripe
+stripe.api_key = 'sk_test_51Po4fAJA9bLtD1vVbJmjVxmEbMFcfoPV4M7aNLDksHg85U90JAl8EWsrRh8HS1N1d4006kxTYr8GGOHfAjb4rbqT002xneECYI'
+
 @api.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
+    url_frontend = os.getenv('FRONTEND_URL')
+
     try:
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[
-                {
-                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    'price': '{{PRICE_ID}}',
-                    'quantity': 1,
+        data = request.get_json()
+
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'eur',
+                    'product_data': {
+                        'name': data['name'],
+                    },
+                    'unit_amount': data['amount'],
                 },
-            ],
+                'quantity': data['quantity'],
+            }],
             mode='payment',
-            success_url=YOUR_DOMAIN + '?success=true',
-            cancel_url=YOUR_DOMAIN + '?canceled=true',
+            success_url = url_frontend + '/success',
+            cancel_url = url_frontend + '/cancel',
         )
+
+        return jsonify({'id': session.id})
+
     except Exception as e:
-        return str(e)
-    return redirect(checkout_session.url, code=303)
+        return jsonify(error=str(e)), 403
 # Login----------------------------------------------------------------------------------------------
 @api.route('/login', methods=['POST'])
 def login():
@@ -124,16 +132,28 @@ def create_user():
     if 'is_active' not in body:
         return 'Debes especificar si el usuario está activo', 400
 
-    user = User(name = body["name"], address = body["address"], email = body["email"], password = body["password"], is_active = body["is_active"])
+    # Verificar se o email já está cadastrado
+    existing_user = User.query.filter_by(email=body['email']).first()
+    if existing_user:
+        return jsonify({"msg": "O email já está cadastrado. Tente com um diferente."}), 409
+
+    # Criar um novo usuário
+    user = User(
+        name=body["name"],
+        address=body["address"],
+        email=body["email"],
+        password=body["password"],
+        is_active=body["is_active"]
+    )
     db.session.add(user)
     db.session.commit()
 
     response_body = {
-        "msg": "Usuario creado!",
+        "msg": "Usuário criado!",
         "id": user.id
     }
 
-    return jsonify(response_body), 200
+    return jsonify(response_body), 201  
 
 #Get all users
 @api.route('/users', methods=['GET'])
@@ -315,6 +335,26 @@ def get_one_Order(order_id):
         "result": Order_query.serialize()
     }
     return jsonify(response_body), 200
+# Order Status---------------------------------------------------------------------------------------
+@api.route('/order-status/<int:order_id>', methods=['GET'])
+@jwt_required()
+def get_order_status(order_id):
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email=current_user).first()
+
+    # Verificar se o pedido existe e pertence ao usuário
+    order = Order.query.filter_by(id=order_id, user_id=user.id).first()
+
+    if not order:
+        return jsonify({"msg": "Order not found or does not belong to the user"}), 404
+
+    response_body = {
+        "order_id": order.id,
+        "status": order.orderstatus.name  # assuming orderstatus is an enum
+    }
+
+    return jsonify(response_body), 200
+
 
 # Crear pedido y agregar producto al carrito
 @api.route('/cesta', methods=['POST'])
@@ -418,3 +458,136 @@ def getAllUserOrders():
     orders = list(map(lambda order: order.serialize(), order_all))
 
     return jsonify({"msg": "Lista de pedidos del usuario", "results": orders}), 200
+
+# Listar todos los productos de un pedido por usuario
+@api.route('/order-items/<int:id_order>', methods=['GET'])
+@jwt_required()
+def getAllItems(id_order):
+    # recuperar usuario
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email = current_user).first()
+
+    # Consultar Order con el ID del pedido para comprobar el estado del pedido
+    order = Order.query.filter_by(user_id = user.id, id = id_order).first()
+
+    # Consultar la tabla OrderItems filtrando por el ID del pedido
+    order_items_all = OrderItems.query.filter_by(order_id = id_order).all()
+
+    # Crear una lista para almacenar los datos combinados
+    items_list = []
+
+    # Recorrer los elementos de OrderItems
+    for order_item in order_items_all:
+        # Consultar el producto relacionado con este order_item
+        producto = Product.query.get(order_item.product_id)
+
+        # Crear un diccionario con la información necesaria
+        item_data = {
+            "id": producto.id,
+            "product_name": producto.name,
+            "product_image": producto.image,
+            "quantity": order_item.quantity,
+            "price": producto.price
+        }
+
+        # Agregar el diccionario a la lista
+        items_list.append(item_data)
+
+
+    return jsonify( {"msg": "Lista de productos del pedido", "results": items_list, "status": order.serialize()} ), 200
+
+# Listar todos los productos del carrito de compras del usuario
+@api.route('/carrito', methods=['GET'])
+@jwt_required()
+def getAllKartItems():
+    # recuperar usuario
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email = current_user).first()
+
+    # Consultar Order con el ID del pedido para comprobar el estado del pedido
+    order = Order.query.filter_by(user_id = user.id, order_status = OrderStatus.PENDIENTE).first()
+
+    if order is None:
+        return jsonify({"msg": "No hay órdenes pendientes para este usuario.", "results": [], "status": ""}), 404
+
+    # Consultar la tabla OrderItems filtrando por el ID del pedido
+    order_items_all = OrderItems.query.filter_by(order_id = order.id).all()
+
+    # Crear una lista para almacenar los datos combinados
+    items_list = []
+
+    # Recorrer los elementos de OrderItems
+    for order_item in order_items_all:
+        # Consultar el producto relacionado con este order_item
+        producto = Product.query.get(order_item.product_id)
+
+        # Crear un diccionario con la información necesaria
+        item_data = {
+            "id": producto.id,
+            "product_name": producto.name,
+            "product_image": producto.image,
+            "quantity": order_item.quantity,
+            "price": producto.price
+        }
+
+        # Agregar el diccionario a la lista
+        items_list.append(item_data)
+
+
+    return jsonify( {"msg": "Lista de productos del carrito", "results": items_list, "status": order.serialize()} ), 200
+
+# Quitar un producto del carrito de compras
+@api.route('/quitar', methods=['PUT'])
+@jwt_required()
+def removeItemKart():
+    # recuperar usuario
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email = current_user).first()
+
+    # recuperar información del producto
+    data = request.get_json()
+    product_id = data['id']
+
+    # Consultar Order con el ID del pedido para comprobar el estado del pedido
+    order = Order.query.filter_by(user_id = user.id, order_status = OrderStatus.PENDIENTE).first()
+
+    # Consultar la tabla OrderItems filtrando por el ID del pedido y el ID del producto que queremos quitar del carrito
+    order_item = OrderItems.query.filter_by(order_id=order.id, product_id=product_id).first()
+
+    # Si la cantidad del producto es mayor que 1, simplemente reduce la cantidad
+    if order_item.quantity > 1:
+        order_item.quantity -= 1
+        order.total_amount -= Product.query.get(product_id).price
+    else:
+        # Si la cantidad es 1, elimina el registro de OrderItems
+        db.session.delete(order_item)
+        order.total_amount -= Product.query.get(product_id).price
+
+    # Si el total_amount es 0, borramos el pedido de Order
+    if order.total_amount <= 0:
+        db.session.delete(order)
+    
+    db.session.commit()
+
+    return jsonify( {"msg": "El producto fue quitado del carrito!"} ), 200
+
+@api.route('/success', methods=['PUT'])
+@jwt_required()
+def success():
+    # recuperar usuario
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(email = current_user).first()
+
+    # recuperar información del frontend
+    data = request.get_json()
+    payed = data['payed']
+
+    if payed:
+        # Consultar Order con el ID del usuario y que tenga status pendiente para actualizarlo a recibido
+        order = Order.query.filter_by(user_id = user.id, order_status = OrderStatus.PENDIENTE).first()
+        order.order_status = OrderStatus.RECIBIDO
+        db.session.commit()
+
+        return jsonify( {"msg": "El estado del pedido ha sido actualizado!"} ), 200
+    else:
+        return jsonify( {"msg": "Error al actualizar el estado del pedido!"} ), 400

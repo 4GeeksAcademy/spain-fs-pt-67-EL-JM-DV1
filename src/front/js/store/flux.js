@@ -1,7 +1,9 @@
+import { loadStripe } from '@stripe/stripe-js';
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			
+
 			productDetails: {},
 			cart: [],
 			allProducts: [],
@@ -10,7 +12,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			catProducts: [],
 			roedorProducts:[],
 			avesProducts:[],
-			pecesProducts:[]
+			pecesProducts:[],
+			cartCount: 0
 
 		},
 		actions: {
@@ -138,16 +141,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"id": product_details.id,
 							"price": product_details.price
 						})
-
 					});
-
+			
 					const data = await resp.json();
-
-					return data.result;
+			
+					if (data.result) {
+						const store = getStore();
+						const updatedCart = [...store.cart, product_details];
+						setStore({ cart: updatedCart });
+						return true;
+					} else {
+						return false;
+					}
 				} catch (error) {
-					console.log("Error al añadir prducto al carrito", error);
+					console.log("Error al añadir producto al carrito", error);
+					return false;
 				}
 			},
+			
+
+
 
 			getProductDetails: async (product_id) => {
 				try {
@@ -161,20 +174,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getAllProducts: async () => {
-                try {
-                    const resp = await fetch(process.env.BACKEND_URL + `/api/products`);
-                    if (resp.ok) {
-                        const data = await resp.json();
-                        console.log("Fetched all products:", data.results);
-                        setStore({ allProducts: data.results });
-                    } else {
-                        console.log("Error fetching products", resp.statusText);
-                    }
-                } catch (error) {
-                    console.error("Error fetching products", error);
-                }
-            },
-		
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products`);
+					if (resp.ok) {
+						const data = await resp.json();
+						console.log("Fetched all products:", data.results);
+						setStore({ allProducts: data.results });
+					} else {
+						console.log("Error fetching products", resp.statusText);
+					}
+				} catch (error) {
+					console.error("Error fetching products", error);
+				}
+			},
+
 
 			getProductsByCategory: async (category) => {
 				try {
@@ -187,14 +200,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getProductsByCategory: async (category) => {
-                try {
-                    const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
-                    const data = await resp.json();
-                    setStore({ ...getStore(), dogProducts: data.results });
-                } catch (error) {
-                    console.log("Error al cargar los productos por categoría", error);
-                }
-            },
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/products?category=${category}`);
+					const data = await resp.json();
+					setStore({ ...getStore(), dogProducts: data.results });
+				} catch (error) {
+					console.log("Error al cargar los productos por categoría", error);
+				}
+			},
 
 			getAllOrders: async (token) => {
 				try {
@@ -253,7 +266,106 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getAllItems: async (token, id_order) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/order-items/${id_order}`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
+						}
+					});
+					const data = await resp.json();
 
+					setStore({ ...getStore(), orderItems: data.results, orderStatus: data.status });
+				} catch (error) {
+					console.log("Erro al cargar los productos del pedido", error);
+				}
+			},
+
+			getAllKartItems: async (token) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/carrito`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
+						}
+					});
+					const data = await resp.json();
+
+					setStore({ ...getStore(), orderItems: data.results, orderStatus: data.status });
+				} catch (error) {
+					console.log("Erro al cargar los productos del pedido", error);
+				}
+			},
+
+			checkout: async (id, total) => {
+				const stripePromise = loadStripe('pk_test_51Po4fAJA9bLtD1vVqtRAbDnyup43XOaOn5JIbGqQYWoF6fQsYo1kJHWUSRqliCqo7XT6ZMJV3QoOejEf4c0jDQpY00zNwrihpf');
+				const stripe = await stripePromise;
+
+				const response = await fetch(process.env.BACKEND_URL + '/api/create-checkout-session', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						name: 'Baxter Shop - Pedido: #' + id,
+						amount: total * 100,  // en centavos (5000 centavos = 50.00 USD)
+						quantity: 1,
+					}),
+				});
+
+				const session = await response.json();
+				console.log('Session ID:', session.id);
+
+				const result = await stripe.redirectToCheckout({
+					sessionId: session.id,
+				});
+
+				if (result.error) {
+					console.error(result.error.message);
+				}
+			},
+
+			removeItemKart: async (token, product_id) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + '/api/quitar', {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
+						},
+						body: JSON.stringify({
+							id: product_id
+						})
+					});
+					const data = await resp.json();
+
+					//setStore({ ...getStore(), orderItems: data.results, orderStatus: data.status });
+				} catch (error) {
+					console.log("Erro al cargar los productos del pedido", error);
+				}
+			},
+
+			success: async (token) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + '/api/success', {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
+						},
+						body: JSON.stringify({
+							payed: true
+						})
+					});
+
+					const data = await resp.json();
+				} catch (error) {
+					console.log("Error al procesar el pago de la compra!", error);
+				}
+			}
 		}
 	};
 };

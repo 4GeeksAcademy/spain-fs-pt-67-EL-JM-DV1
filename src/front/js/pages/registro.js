@@ -1,45 +1,67 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
-
-
 export function Registro() {
     const [name, setName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+    const [numero, setNumero] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
-    const [address, setAddress] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    
 
-    const handleRegistro = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Verifica si las contraseñas coinciden
         if (password !== password2) {
-            setError("Las contraseñas no coinciden");
+            setError("Las contraseñas no coinciden.");
             return;
         }
 
-        try {
-            const success = await actions.registro({ name, email, password, address });
+        // Estructura el cuerpo de la solicitud
+        const requestBody = {
+            name,
+            address: numero,
+            email,
+            password,
+            is_active: true
+        };
 
-            if (success) {
-                alert("Registro exitoso");
-                navigate("/dashboard");  // Redirige a la página de inicio o donde desees
-            } else {
-                setError("Error al registrar el usuario");
+        try {
+            const response = await fetch("https://musical-spoon-q77j9grp6w74f49px-3001.app.github.dev/api/user", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            const data = await response.json();
+
+            if (response.status === 409) {
+                setError(data.msg || "El email ya está registrado. Intente con uno diferente.");
+                return;
             }
+
+            if (!response.ok) {
+                setError(data.msg || "Error al registrar al usuario.");
+                return;
+            }
+
+            console.log("Usuario creado con éxito:", data);
+            navigate("/login");
+
         } catch (error) {
-            console.error("Error al registrar el usuario:", error);
-            setError("Error al registrar el usuario");
+            console.error("Error en la solicitud:", error);
+            setError("Error al registrar al usuario.");
         }
     };
 
     return (
         <div className="container mt-5">
-            <form onSubmit={handleRegistro} noValidate>
+            <form noValidate onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label className="form-label">Nombre:</label>
                     <input
@@ -50,26 +72,42 @@ export function Registro() {
                         required
                     />
                 </div>
+
+                <div className="mb-3">
+                    <label className="form-label">Apellido:</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                    />
+                </div>
+
                 <div className="mb-3">
                     <label className="form-label">Email:</label>
                     <input
                         type="email"
                         className="form-control"
+                        placeholder="nombre@ejemplo.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
+
                 <div className="mb-3">
-                    <label className="form-label">Dirección:</label>
+                    <label className="form-label">Teléfono:</label>
                     <input
-                        type="text"
+                        type="tel"
                         className="form-control"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="xxxx xxxx"
+                        value={numero}
+                        onChange={(e) => setNumero(e.target.value)}
                         required
                     />
                 </div>
+
                 <div className="mb-3">
                     <label className="form-label">Contraseña:</label>
                     <input
@@ -90,8 +128,13 @@ export function Registro() {
                         required
                     />
                 </div>
-                {error && <div className="alert alert-danger">{error}</div>}
-                <button type="submit" className="btn btn-primary">Registrarse</button>
+
+                <button type="submit" className="btn btn-primary">
+                    Registrar
+                </button>
+
+                {/* Muestra el mensaje de error debajo del botón */}
+                {error && <div className="alert alert-danger mt-3">{error}</div>}
             </form>
         </div>
     );

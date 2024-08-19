@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
+	const { store } = useContext(Context);
+
 	return (
 		<nav className="navbar navbar-expand-lg navbar bg-danger border-bottom border-body">
 			<div className="container-fluid">
@@ -28,11 +31,20 @@ export const Navbar = () => {
 						</li>
 					</ul>
 					<form className="d-flex gap-3" role="search">
-						<Link className="btn btn-outline-light" to="/carrito"> Carrito </Link>
-						<Link className="btn btn-outline-light" to="/usuario"> Usuario </Link>
+						<Link className="btn btn-outline-light position-relative" to="/checkout">
+							Carrito
+							{store.cart.length > 0 && (
+								<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+									{store.cart.length}
+									<span className="visually-hidden">unread messages</span>
+								</span>
+							)}
+						</Link>
+						<Link className="btn btn-outline-light" to="/login"> Usuario </Link>
 					</form>
 				</div>
 			</div>
 		</nav>
 	);
 };
+
