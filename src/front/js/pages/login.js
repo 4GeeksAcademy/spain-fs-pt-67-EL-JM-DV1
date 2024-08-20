@@ -6,26 +6,25 @@ export const Login = () => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(''); // Estado para armazenar mensagem de erro
+    const [error, setError] = useState(''); // Estado para manejar mensajes de error
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const success = await actions.login(email, password);
         if (success) {
-            navigate("/user"); // Altere o redirecionamento para a página de usuário
+            navigate("/user"); // Redirige a la página de usuario al iniciar sesión con éxito
         } else {
-            // Atualiza o estado de erro para exibir a mensagem na tela
             setError("No existe una cuenta con ese e-mail. Por favor, revisa si está correcto o regístrate creando una cuenta.");
         }
     };
 
     return (
         <div className="container mt-5">
+            <h2>Login</h2>
             <form onSubmit={handleSubmit}>
-                <h2>Login</h2>
                 <div className="form-group">
-                    <label htmlFor="email">Usúario:</label>
+                    <label htmlFor="email">Email:</label>
                     <input
                         type="email"
                         id="email"
@@ -36,7 +35,7 @@ export const Login = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Contrasenha:</label>
+                    <label htmlFor="password">Password:</label>
                     <input
                         type="password"
                         id="password"
@@ -51,11 +50,15 @@ export const Login = () => {
                         {error}
                     </div>
                 )}
-                <button type="submit" className="btn btn-primary mt-3">Login</button>
+                <button type="submit" className="btn btn-danger mt-3"> Login </button>
             </form>
             <br />
+            <div className="forgot-password">
+                <Link to="/request-reset"><strong> ¿Recuperar Contraseña? </strong></Link>
+            </div>
+            <br />
             <Link to="/registro">
-                <button className="btn btn-secondary">Registro</button>
+                <button className="btn btn-danger">Registro</button>
             </Link>
         </div>
     );

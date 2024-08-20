@@ -24,6 +24,9 @@ import { Order } from "./pages/order";
 import Checkout from "./pages/checkout";
 import { Success } from "./pages/success";
 import { Cancel } from "./pages/cancel";
+import RequestReset from "./pages/RequestReset";
+import ResetPassword from "./pages/ResetPassword";
+
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -47,6 +50,8 @@ const Layout = () => {
                         <Route element={<Cart />} path="/cart" />
                         <Route element={<Pay />} path="/pay" />
                         <Route element={<Checkout />} path="/checkout" />
+                        <Route element={<RequestReset />} path="/Request-Reset" />
+                        <Route element={<ResetPassword />} path="/Reset-Password/:token" />
                         <Route element={<Success />} path="/success" />
                         <Route element={<Cancel />} path="/cancel" />
                         <Route element={<DogCard />} path="/perros" />
