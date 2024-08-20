@@ -11,15 +11,17 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from api.models import db, User, Product, OrderItems, Order
+from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
 
+# MailTrap---------------------------------------------------------------------------------
 # Configurar Flask-Mail
 app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
-app.config['MAIL_PORT'] = 2525
+app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'c3dfb7cbfc7895'
 app.config['MAIL_PASSWORD'] = 'e6a36cf9f4457b'
 app.config['MAIL_USE_TLS'] = True
@@ -82,23 +84,66 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
-
-
+# Send-Mail------------------------------------------------------------
 @app.route('/send-email', methods=['POST'])
 def send_email():
     data = request.get_json()
-    print(data)
-    msg = Message('Hello from Mailtrap',
+    msg = Message(subject='Hello from Mailtrap',
                   sender='eduloreto242@gmail.com',
                   recipients=[data['email']])
-    msg.body = 'This is a test email sent from a Flask app using Mailtrap.'
+    msg.body = f'This is a test email sent from a Flask app using Mailtrap.'
 
     try:
         mail.send(msg)
         return jsonify({"msg": "Email sent successfully"}), 200
     except Exception as e:
-        return jsonify({"msg": str(e)}), 500    
+        return jsonify({"msg": str(e)}), 500
+# ResetPassword ------------------------------------------------------------
+ # Initialize the serializer
+serializer = URLSafeTimedSerializer(app.config['JWT_SECRET_KEY'])
 
+def generate_reset_token(email):
+    return serializer.dumps(email, salt='password-reset-salt')
+
+def confirm_reset_token(token, expiration=3600):
+    try:
+        email = serializer.loads(token, salt='password-reset-salt', max_age=expiration)
+    except:
+        return False
+    return email
+
+def send_reset_email(email, token):
+    reset_url = url_for('reset_password', token=token, _external=True)
+    msg = Message(subject='Password Reset Request',
+                  sender='your_email@example.com',
+                  recipients=[email])
+    msg.body = f'Your password reset link is {reset_url}'
+    mail.send(msg)
+
+@app.route('/request-reset', methods=['POST'])
+def request_reset():
+    data = request.get_json()
+    user = User.query.filter_by(email=data['email']).first()
+    
+    if user:
+        token = generate_reset_token(user.email)
+        send_reset_email(user.email, token)
+
+    return jsonify({"message": "If the email is registered, you will receive a password reset email shortly."}), 200
+
+@app.route('/reset-password', methods=['POST'])
+def reset_password():
+    data = request.get_json()
+    email = confirm_reset_token(data['token'])
+    if not email:
+        return jsonify({"message": "The token is invalid or expired."}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if user:
+        user.password = generate_password_hash(data['password'])
+        db.session.commit()
+        return jsonify({"message": "Password reset successfully."}), 200
+    return jsonify({"message": "User not found."}), 404
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

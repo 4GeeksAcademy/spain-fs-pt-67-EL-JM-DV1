@@ -10,9 +10,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			orderList: [],
 			dogProducts: [],
 			catProducts: [],
-			roedorProducts:[],
-			avesProducts:[],
-			pecesProducts:[],
+			roedorProducts: [],
+			avesProducts: [],
+			pecesProducts: [],
 			cartCount: 0,
 			orderItems: [],
 			orderStatus: {}
@@ -22,7 +22,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			login: async (email, password) => {
 				try {
-					// Atualize a URL do backend aqui
 					let response = await fetch(process.env.BACKEND_URL + `/api/login`, {
 						method: "POST",
 						headers: {
@@ -61,7 +60,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"password": password
 						})
 					});
-			
+
 					if (response.ok) {
 						const data = await response.json();
 						localStorage.setItem("token", data.access_token);
@@ -75,10 +74,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
-			
 
 
-		
+
+
 
 			// // Use getActions to call a function within a function
 			// exampleFunction: () => {
