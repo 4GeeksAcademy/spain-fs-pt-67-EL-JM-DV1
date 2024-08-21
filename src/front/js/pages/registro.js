@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 export function Registro() {
     const [name, setName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [address, setAddress] = useState("");
     const [email, setEmail] = useState("");
-    const [numero, setNumero] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const [error, setError] = useState("");
@@ -22,15 +21,15 @@ export function Registro() {
 
         // Estructura el cuerpo de la solicitud
         const requestBody = {
-            name,
-            address: numero,
-            email,
-            password,
+            name:name,
+            address:address,
+            email:email,
+            password:password,
             is_active: true
         };
 
         try {
-            const response = await fetch("https://musical-spoon-q77j9grp6w74f49px-3001.app.github.dev/api/user", {
+            const response = await fetch(process.env.BACKEND_URL + `/api/registro`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -51,7 +50,7 @@ export function Registro() {
             }
 
             console.log("Usuario creado con éxito:", data);
-            navigate("/login");
+            navigate("/home");
 
         } catch (error) {
             console.error("Error en la solicitud:", error);
@@ -74,12 +73,12 @@ export function Registro() {
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label">Apellido:</label>
+                    <label className="form-label">Direccion:</label>
                     <input
                         type="text"
                         className="form-control"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
                         required
                     />
                 </div>
@@ -92,18 +91,6 @@ export function Registro() {
                         placeholder="nombre@ejemplo.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">Teléfono:</label>
-                    <input
-                        type="tel"
-                        className="form-control"
-                        placeholder="xxxx xxxx"
-                        value={numero}
-                        onChange={(e) => setNumero(e.target.value)}
                         required
                     />
                 </div>
@@ -129,7 +116,7 @@ export function Registro() {
                     />
                 </div>
 
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-outline-dark">
                     Registrar
                 </button>
 
