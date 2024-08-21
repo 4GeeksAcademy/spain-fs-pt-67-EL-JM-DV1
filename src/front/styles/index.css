@@ -1,3 +1,46 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+.red-background {
+    background-color: #FF5A63;
+}
+
+.white-text {
+    color: white;
+}
+
+.red-text {
+    color: #FF5A63;
+}
+
+.special-btn {
+    background-color: #FF5A63;
+    color: white;
+    width: 400px;
+}
+
+.special-btn2 {
+    background-color: #FF5A63;
+    color: white;
+    width: 150px;
+}
+
+footer {
+    background: #FF5A63;
+    min-height: 100px;
+}
+
+footer p {
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+#iconos i {
+    font-size: 28px;
+    padding: 0 8px;
+    color: black;
+}
+
+.red-border {
+    border-color: #FF5A63;
+}
