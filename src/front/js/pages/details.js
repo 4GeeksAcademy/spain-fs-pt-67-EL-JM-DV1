@@ -25,7 +25,7 @@ export const Details = () => {
 
     useEffect(() => {
         actions.getProductDetails(id_product);
-    }, [id_product]);
+    }, [store.cart]);
 
     const goToCart = () => {
         navigate('/carrinho'); // Navega para a página do carrinho
