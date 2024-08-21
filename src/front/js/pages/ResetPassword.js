@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 const ResetPassword = () => {
-    const { token } = useParams(); // Assuming the token is passed as a URL parameter
     const [password, setPassword] = useState('');
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get('token');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
@@ -17,12 +18,12 @@ const ResetPassword = () => {
         }
 
         try {
-            const response = await fetch(process.env.BACKEND_URL + '/api/reset-password', {
+            const response = await fetch(process.env.BACKEND_URL + '/reset-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ token, password })
+                body: JSON.stringify({ "token": token, "password": password })
             });
 
             const data = await response.json();

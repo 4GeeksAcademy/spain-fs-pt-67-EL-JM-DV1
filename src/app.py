@@ -14,16 +14,18 @@ from api.models import db, User, Product, OrderItems, Order
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
+from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv()
 app = Flask(__name__)
-
+CORS(app)
 # MailTrap---------------------------------------------------------------------------------
 # Configurar Flask-Mail
-app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'c3dfb7cbfc7895'
-app.config['MAIL_PASSWORD'] = 'e6a36cf9f4457b'
+app.config['MAIL_SERVER']='live.smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'api'
+app.config['MAIL_PASSWORD'] = '952a491111751199c627448800f4231d'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
@@ -113,9 +115,9 @@ def confirm_reset_token(token, expiration=3600):
     return email
 
 def send_reset_email(email, token):
-    reset_url = url_for('reset_password', token=token, _external=True)
-    msg = Message(subject='Password Reset Request',
-                  sender='your_email@example.com',
+    reset_url = os.getenv('FRONTEND_URL') + '/reset-password?token=' + token
+    msg = Message(subject='Baxter Shop - Password Reset Request',
+                  sender='mailtrap@demomailtrap.com',
                   recipients=[email])
     msg.body = f'Your password reset link is {reset_url}'
     mail.send(msg)

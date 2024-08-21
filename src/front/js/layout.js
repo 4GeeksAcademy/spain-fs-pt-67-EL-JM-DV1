@@ -50,8 +50,8 @@ const Layout = () => {
                         <Route element={<Cart />} path="/cart" />
                         <Route element={<Pay />} path="/pay" />
                         <Route element={<Checkout />} path="/checkout" />
-                        <Route element={<RequestReset />} path="/Request-Reset" />
-                        <Route element={<ResetPassword />} path="/Reset-Password/:token" />
+                        <Route element={<RequestReset />} path="/request-reset" />
+                        <Route element={<ResetPassword />} path="/reset-password" />
                         <Route element={<Success />} path="/success" />
                         <Route element={<Cancel />} path="/cancel" />
                         <Route element={<DogCard />} path="/perros" />

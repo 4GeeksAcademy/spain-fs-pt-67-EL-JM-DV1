@@ -10,12 +10,12 @@ const RequestReset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(process.env.BACKEND_URL + '/api/request-reset', {
+      const response = await fetch(process.env.BACKEND_URL + `/request-reset`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ "email": email })
       });
 
       const data = await response.json();
