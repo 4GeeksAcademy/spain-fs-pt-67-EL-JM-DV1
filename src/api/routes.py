@@ -61,11 +61,13 @@ def login():
     email = request.json.get('email', None)
     password = request.json.get('password', None)
     # Aquí deberías validar contra tu base de datos
-    user_query = User.query.filter_by(email=email, password=password).first()
-    if email != user_query.email or password != user_query.password:
+    user_query = User.query.filter_by(email=email).first()
+
+    if email != user_query.email or not(check_password_hash(user_query.password, password)):
         return jsonify({"msg": "Bad username or password"}), 401
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token), 200
+
 @api.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():

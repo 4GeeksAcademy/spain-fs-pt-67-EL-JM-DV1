@@ -50,7 +50,7 @@ export function Registro() {
             }
 
             console.log("Usuario creado con éxito:", data);
-            navigate("/home");
+            navigate("/user");
 
         } catch (error) {
             console.error("Error en la solicitud:", error);
