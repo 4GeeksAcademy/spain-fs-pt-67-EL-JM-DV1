@@ -48,7 +48,7 @@ export const Order = () => {
                                         <img src={item.product_image} class="img-fluid rounded-start" alt="..." />
                                     </div>
                                     <div className="col-8">
-                                        {item.product_name}: {item.quantity} x {item.price}€
+                                        {item.product_name}: <span className="text-dark">{item.quantity} x {item.price}€</span>
                                     </div>
                                 </div>
                             </li>

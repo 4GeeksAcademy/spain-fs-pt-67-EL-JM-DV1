@@ -38,14 +38,15 @@ const RequestReset = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Request Password Reset</h2>
+      <h2 className='red-text'>Restablecer Contraseña</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
-            className="form-control"
+            className="form-control red-border"
+            placeholder="nombre@ejemplo.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -61,7 +62,7 @@ const RequestReset = () => {
             {error}
           </div>
         )}
-        <button type="submit" className="btn btn-primary mt-3">Request Reset</button>
+        <button type="submit" className="btn special-btn2 mt-3">Enviar</button>
       </form>
     </div>
   );

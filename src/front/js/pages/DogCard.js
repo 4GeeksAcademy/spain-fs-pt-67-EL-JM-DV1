@@ -26,11 +26,11 @@ const DogCard = () => {
                 {dogProducts.map((product, index) => (
                     <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4">
                         <Link to={`/detail/${product.id}`} className="text-decoration-none text-dark">
-                            <div className="card h-100">
+                            <div className="card h-100 red-border">
                                 <img src={product.image} className="card-img-top" alt={product.name} />
                                 <div className="card-body">
                                     <h5 className="card-title red-text">{product.name}</h5>
-                                    <p className="card-text">${product.price}</p>
+                                    <p className="card-text">{product.price}€</p>
                                 </div>
                             </div>
                         </Link>

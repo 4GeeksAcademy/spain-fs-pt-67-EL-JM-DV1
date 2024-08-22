@@ -41,7 +41,7 @@ export const User = () => {
                         store.orderList.length > 0 ? store.orderList.map((order, index) => (
                             <ul className="list-group mx-auto" key={index}>
                                 <li className="list-group-item red-border my-1">
-                                    <Link to={`/order/${order.id}`} className="text-decoration-none red-text">
+                                    <Link to={`/order/${order.id}`} className="text-decoration-none text-dark">
                                         Número del pedido: #{order.id} - Precio total: {order.total_amount}€
                                     </Link>
                                 </li>

@@ -4,7 +4,7 @@ export const Footer = () => (
 	<div className="footer mt-auto py-3 text-center">
 
 
-		<section id="seccion-contacto" className="border-bottom border-secondary border-2">
+		<section id="seccion-contacto" className="">
 			<div id="seccion-contactos">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
 					<path fill="#FF5A63" fill-opacity="1"

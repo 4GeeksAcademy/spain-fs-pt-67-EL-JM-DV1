@@ -21,25 +21,26 @@ export const Login = () => {
 
     return (
         <div className="container mt-5">
-            <h2>Login</h2>
+            <h2 className="red-text">Login</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="email">Email:</label>
                     <input
                         type="email"
                         id="email"
-                        className="form-control"
+                        className="form-control red-border"
+                        placeholder="nombre@ejemplo.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Password:</label>
+                    <label htmlFor="password">Contraseña:</label>
                     <input
                         type="password"
                         id="password"
-                        className="form-control"
+                        className="form-control red-border"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -50,7 +51,7 @@ export const Login = () => {
                         {error}
                     </div>
                 )}
-                <button type="submit" className="btn btn-danger mt-3"> Login </button>
+                <button type="submit" className="btn special-btn2 mt-3"> Login </button>
             </form>
             <br />
             <div className="forgot-password">
@@ -58,7 +59,7 @@ export const Login = () => {
             </div>
             <br />
             <Link to="/registro">
-                <button className="btn btn-danger">Registro</button>
+                <button className="btn special-btn2">Registro</button>
             </Link>
         </div>
     );
