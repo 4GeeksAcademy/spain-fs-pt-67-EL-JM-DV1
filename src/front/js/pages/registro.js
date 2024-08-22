@@ -60,12 +60,13 @@ export function Registro() {
 
     return (
         <div className="container mt-5">
+            <h2 className="red-text">Crear Cuenta</h2>
             <form noValidate onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label className="form-label">Nombre:</label>
+                    <label className="form-label">Nombre y Apellidos:</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-control red-border"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
@@ -73,10 +74,10 @@ export function Registro() {
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label">Direccion:</label>
+                    <label className="form-label">Dirección:</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-control red-border"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
                         required
@@ -87,7 +88,7 @@ export function Registro() {
                     <label className="form-label">Email:</label>
                     <input
                         type="email"
-                        className="form-control"
+                        className="form-control red-border"
                         placeholder="nombre@ejemplo.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -99,7 +100,7 @@ export function Registro() {
                     <label className="form-label">Contraseña:</label>
                     <input
                         type="password"
-                        className="form-control"
+                        className="form-control red-border"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -109,14 +110,14 @@ export function Registro() {
                     <label className="form-label">Confirmar Contraseña:</label>
                     <input
                         type="password"
-                        className="form-control"
+                        className="form-control red-border"
                         value={password2}
                         onChange={(e) => setPassword2(e.target.value)}
                         required
                     />
                 </div>
 
-                <button type="submit" className="btn btn-outline-dark">
+                <button type="submit" className="btn special-btn2">
                     Registrar
                 </button>
 

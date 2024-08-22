@@ -42,7 +42,7 @@ export const Details = () => {
                         <div className="card-body">
                             <h5 className="card-title red-text">{store.productDetails.name}</h5>
                             <p className="card-text">{store.productDetails.description}</p>
-                            <p className="card-text">{store.productDetails.price}<small className="text-body-secondary"></small></p>
+                            <p className="card-text">{store.productDetails.price}€<small className="text-body-secondary"></small></p>
                         </div>
                     </div>
                 </div>
