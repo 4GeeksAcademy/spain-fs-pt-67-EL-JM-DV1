@@ -23,7 +23,7 @@ export const Success = () => {
             <div className="text-center mb-5 red-text">
                 <h1>Gracias por tu compra!</h1>
                 <h2>Tu pago se ha realizado con éxito</h2>
-                <h3>Puedes consultar el estado de tu pedido en tu pagina de usuario</h3>
+                <h3>Puedes consultar el estado de tu pedido en tu cuenta</h3>
             </div>
         </div>
 
