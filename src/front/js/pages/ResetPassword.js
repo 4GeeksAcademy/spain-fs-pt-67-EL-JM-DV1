@@ -43,26 +43,26 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h2>Reset Password</h2>
+        <div className="container mt-5" style={{ 'maxWidth': '500px' }}>
+            <h2 className='red-text'>Redefinir Contraseña</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="password">New Password:</label>
+                    <label htmlFor="password">Nueva Contraseña:</label>
                     <input
                         type="password"
                         id="password"
-                        className="form-control"
+                        className="form-control red-border"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm New Password:</label>
+                    <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
                     <input
                         type="password"
                         id="confirmPassword"
-                        className="form-control"
+                        className="form-control red-border"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
@@ -78,7 +78,9 @@ const ResetPassword = () => {
                         {error}
                     </div>
                 )}
-                <button type="submit" className="btn btn-primary mt-3">Reset Password</button>
+                <div className='d-flex justify-content-center'>
+                    <button type="submit" className="btn special-btn2 mt-3">Confirmar</button>
+                </div>
             </form>
         </div>
     );

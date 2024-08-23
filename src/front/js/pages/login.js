@@ -20,7 +20,7 @@ export const Login = () => {
     };
 
     return (
-        <div className="container mt-5">
+        <div className="container mt-5" style={{ 'maxWidth': '500px' }}>
             <h2 className="red-text">Login</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -51,16 +51,20 @@ export const Login = () => {
                         {error}
                     </div>
                 )}
-                <button type="submit" className="btn special-btn2 mt-3"> Login </button>
+                <div className="d-flex justify-content-center">
+                    <button type="submit" className="btn special-btn2 mt-3 "> Login </button>
+                </div>
             </form>
             <br />
-            <div className="forgot-password">
+            <div className="forgot-password d-flex justify-content-center">
                 <Link to="/request-reset"><strong> ¿Recuperar Contraseña? </strong></Link>
             </div>
             <br />
-            <Link to="/registro">
-                <button className="btn special-btn2">Registro</button>
-            </Link>
+            <div className="d-flex justify-content-center">
+                <Link to="/registro">
+                    <button className="btn special-btn2">Registro</button>
+                </Link>
+            </div>
         </div>
     );
 };

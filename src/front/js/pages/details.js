@@ -48,7 +48,7 @@ export const Details = () => {
                 </div>
             </div>
             <div className="d-flex justify-content-center gap-3"> 
-                <button type="button" className="btn special-btn" onClick={handleBuy}>Comprar</button>
+                <button type="button" className="btn special-btn" onClick={handleBuy}>Añadir al carrito</button>
             </div>
             {message && (
                 <div className="alert alert-info mt-3 text-center" role="alert">

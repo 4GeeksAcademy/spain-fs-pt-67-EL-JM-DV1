@@ -54,11 +54,15 @@ const Checkout = () => {
                 }
             </div>
 
-            <div className="my-1 d-flex justify-content-center">
-                <button className='btn special-btn' role="link" onClick={handleBuy}>
-                    Pagar
-                </button>
-            </div>
+            {
+                store.orderStatus.total_amount > 0 && (
+                    <div className="my-1 d-flex justify-content-center">
+                        <button className='btn special-btn' role="link" onClick={handleBuy}>
+                            Pagar
+                        </button>
+                    </div>
+                )
+            }
         </div>
     );
 };

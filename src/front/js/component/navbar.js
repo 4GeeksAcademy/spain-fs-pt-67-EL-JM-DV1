@@ -40,7 +40,7 @@ export const Navbar = () => {
 								</span>
 							)}
 						</Link>
-						<Link className="btn btn-outline-light" to="/user"> Usuario </Link>
+						<Link className="btn btn-outline-light" to="/user"> Mi Cuenta </Link>
 					</form>
 				</div>
 			</div>

@@ -37,8 +37,8 @@ const RequestReset = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className='red-text'>Restablecer Contraseña</h2>
+    <div className="container mt-5" style={{ 'maxWidth': '500px' }}>
+      <h2 className='red-text'>Recuperar Contraseña</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email:</label>
@@ -62,7 +62,9 @@ const RequestReset = () => {
             {error}
           </div>
         )}
-        <button type="submit" className="btn special-btn2 mt-3">Enviar</button>
+        <div className='d-flex justify-content-center'>
+          <button type="submit" className="btn special-btn2 mt-3">Enviar</button>
+        </div>
       </form>
     </div>
   );

@@ -59,7 +59,7 @@ export function Registro() {
     };
 
     return (
-        <div className="container mt-5">
+        <div className="container mt-5" style={{ 'maxWidth': '500px' }}>
             <h2 className="red-text">Crear Cuenta</h2>
             <form noValidate onSubmit={handleSubmit}>
                 <div className="mb-3">
@@ -116,10 +116,11 @@ export function Registro() {
                         required
                     />
                 </div>
-
+                <div className="d-flex justify-content-center">
                 <button type="submit" className="btn special-btn2">
                     Registrar
                 </button>
+                </div>
 
                 {/* Muestra el mensaje de error debajo del botón */}
                 {error && <div className="alert alert-danger mt-3">{error}</div>}
